@@ -45,7 +45,19 @@ const description = entry.data.seoDescription ?? entry.data.short ?? `Guide: ${e
         <aside class="mt-8 p-4 border rounded-xl">
           <h2 class="text-lg font-semibold mb-2">Helpful links</h2>
           <ul class="list-disc ml-6">
-            {entry.data.ctas.map(c => (<li><a class="underline" href={c.url} rel={c.rel ?? "noopener"}>{c.label}</a></li>))}
+            {entry.data.ctas.map(c => (<li>
+		<a 
+            	class="underline"
+            	href={c.url}
+            	rel={c.rel ?? "noopener"}
+            	target="_blank"
+            	data-umami-event="Guide CTA"
+            	data-umami-event-guide={entry.slug}
+            	data-umami-event-title={entry.data.title}
+            	data-umami-event-label={c.label}
+            	data-umami-event-index={String(i)}
+          	>
+	  {c.label}</a></li>))}
           </ul>
         </aside>
       )}

@@ -7,7 +7,16 @@ const links = gameAffiliateLinks(slug, { onlyAffiliate });
   <aside class="mt-6 p-4 border rounded-xl">
     <h3 class="font-semibold text-lg mb-2">{title}</h3>
     <ul class="space-y-2">
-      {links.map(l => <li><a class="underline" href={l.url} rel="noopener sponsored nofollow">{l.label}</a></li>)}
+      {links.map(l => <li>
+        <a
+          class="underline"
+          href={l.url}
+          rel="noopener sponsored nofollow"
+          data-umami-event="Affiliate Click"
+          data-umami-event-store={l.store}
+          data-umami-event-slug={slug}
+        />
+<a class="underline" href={l.url} rel="noopener sponsored nofollow">{l.label}</a></li>)}
     </ul>
     <p class="text-xs text-slate-500 mt-2">Purchases may earn us a commission at no extra cost to you.</p>
   </aside>

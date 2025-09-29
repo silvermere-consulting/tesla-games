@@ -61,7 +61,7 @@ const description = "Pick your game to see Tesla-specific notes, home-platform d
         <ul class="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {games.map(g => (
             <li class="group border rounded-xl overflow-hidden hover:shadow-sm transition">
-              <a href={`/games/${g.slug}`} class="block">
+              <a href={`/games/${g.slug}`} class="block" data-umami-event="Guide Card Click" data-umami-event-source="home" data-umami-event-guide={g.slug} data-umami-event-title={g.data.title}>
                 {g.data.coverImage
                   ? (
                       <img
@@ -103,7 +103,7 @@ const description = "Pick your game to see Tesla-specific notes, home-platform d
     <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {guides.map(g => (
         <li class="border rounded-xl overflow-hidden hover:shadow-sm transition">
-          <a href={`/guides/${g.slug}`} class="block">
+          <a href={`/guides/${g.slug}`} class="block" data-umami-event="Guide Card Click" data-umami-event-source="home" data-umami-event-guide={g.slug} data-umami-event-title={g.data.title}>
             {g.data.coverImage
               ? <img src={g.data.coverImage} alt="" class="w-full aspect-[16/9] object-cover" loading="lazy" />
               : <div class="w-full aspect-[16/9] bg-slate-100 grid place-items-center text-slate-400 text-sm">No image</div>}
