@@ -1,0 +1,118 @@
+---
+import { getCollection } from "astro:content";
+import "../styles/global.css";
+
+export const prerender = true;
+
+const entries = await getCollection("games");
+
+// A→Z by title
+const games = entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+// NEW: load guides
+const allGuides = await getCollection("guides");
+const guides = allGuides
+  .filter(g => !g.data.exclude)
+  .sort((a, b) => {
+    const aFeat = a.data.tags?.includes("featured");
+    const bFeat = b.data.tags?.includes("featured");
+    if (aFeat && !bFeat) return -1;
+    if (!aFeat && bFeat) return 1;
+    const aDate = a.data.updated ?? "1970-01-01";
+    const bDate = b.data.updated ?? "1970-01-01";
+    if (aDate !== bDate) return bDate.localeCompare(aDate);
+    return a.data.title.localeCompare(b.data.title);
+  })
+  .slice(0, 3); // show top 3 on the homepage
+
+const title = "Recreate your Tesla Arcade at Home";
+const description = "Pick your game to see Tesla-specific notes, home-platform differences, cross-saves, and where to play.";
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" />
+  </head>
+  <body class="min-h-screen">
+    <main class="mx-auto max-w-6xl px-6 py-12">
+      <header class="mb-8">
+        <h1 class="text-3xl font-bold">{title}</h1>
+        <p class="text-slate-600 mt-2">{description}</p>
+      </header>
+
+      <section class="mb-10">
+        <div class="flex items-baseline justify-between mb-3">
+          <h2 class="text-xl font-semibold">Available Games</h2>
+          <a class="underline text-sm" href="/games">View all →</a>
+        </div>
+
+        <ul class="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {games.map(g => (
+            <li class="group border rounded-xl overflow-hidden hover:shadow-sm transition">
+              <a href={`/games/${g.slug}`} class="block">
+                {g.data.coverImage
+                  ? (
+                      <img
+                        src={g.data.coverImage}
+                        alt={`${g.data.title} cover`}
+                        class="w-full aspect-[16/9] object-cover"
+                        loading="lazy"
+                        width="640"
+                        height="360"
+                      />
+                    )
+                  : (
+                      <div class="w-full aspect-[16/9] bg-slate-100 grid place-items-center text-slate-400 text-sm">
+                        No image
+                      </div>
+                    )
+                }
+                <div class="p-3">
+                  <h3 class="font-semibold">{g.data.title}</h3>
+                  {g.data.tesla?.available
+                    ? <p class="text-xs text-emerald-700 mt-1">Tesla Arcade</p>
+                    : <p class="text-xs text-slate-500 mt-1">Home only</p>}
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+<section class="mt-12">
+  <div class="flex items-baseline justify-between mb-3">
+    <h2 class="text-xl font-semibold">Guides</h2>
+    <a class="underline text-sm" href="/guides">View all</a>
+  </div>
+
+  {guides.length === 0 ? (
+    <p class="text-slate-500">No guides yet. Add files to <code>src/content/guides/</code>.</p>
+  ) : (
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {guides.map(g => (
+        <li class="border rounded-xl overflow-hidden hover:shadow-sm transition">
+          <a href={`/guides/${g.slug}`} class="block">
+            {g.data.coverImage
+              ? <img src={g.data.coverImage} alt="" class="w-full aspect-[16/9] object-cover" loading="lazy" />
+              : <div class="w-full aspect-[16/9] bg-slate-100 grid place-items-center text-slate-400 text-sm">No image</div>}
+            <div class="p-3">
+              <h3 class="font-semibold">{g.data.title}</h3>
+              {g.data.short && <p class="text-sm text-slate-600 mt-1 line-clamp-2">{g.data.short}</p>}
+              {g.data.updated && <p class="text-xs text-slate-500 mt-2">Updated: {g.data.updated}</p>}
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )}
+</section>
+
+      <footer class="text-xs text-slate-500 mt-10">
+        This site uses affiliate links to authorised stores. Tesla™ is a trademark of Tesla, Inc.
+      </footer>
+    </main>
+  </body>
+</html>

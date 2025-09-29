@@ -1,0 +1,32 @@
+---
+import "../../styles/global.css";
+import GameDetail from "../../components/GameDetail.astro";
+import { getCollection } from "astro:content";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const games = await getCollection("games");
+  return games.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry }
+  }));
+}
+
+const { entry } = Astro.props;
+const title = `${entry.data.title} — Recreate your Tesla game at home`;
+const description = entry.data.short ?? `Where to play ${entry.data.title} on PC/console, and how it differs from Tesla.`;
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" />
+  </head>
+  <body class="mx-auto max-w-3xl px-6 py-12">
+    <a class="underline text-sm" href="/games">← All games</a>
+    <GameDetail entry={entry} />
+  </body>
+</html>

@@ -1,0 +1,260 @@
+{
+  "$ref": "#/definitions/games",
+  "definitions": {
+    "games": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "short": {
+          "type": "string"
+        },
+        "coverImage": {
+          "type": "string"
+        },
+        "tesla": {
+          "type": "object",
+          "properties": {
+            "available": {
+              "type": "boolean"
+            },
+            "scope": {
+              "type": "string"
+            },
+            "controllerRequired": {
+              "type": "boolean",
+              "default": true
+            },
+            "localCoop": {
+              "type": "boolean",
+              "default": true
+            },
+            "notes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            }
+          },
+          "required": [
+            "available"
+          ],
+          "additionalProperties": false
+        },
+        "platforms": {
+          "type": "object",
+          "properties": {
+            "pc": {
+              "type": "object",
+              "properties": {
+                "available": {
+                  "type": "boolean"
+                },
+                "stores": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "gmg",
+                      "fanatical",
+                      "gog",
+                      "humble",
+                      "steam",
+                      "ms",
+                      "epic"
+                    ]
+                  },
+                  "default": []
+                },
+                "perks": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": []
+                }
+              },
+              "required": [
+                "available"
+              ],
+              "additionalProperties": false
+            },
+            "xbox": {
+              "type": "object",
+              "properties": {
+                "available": {
+                  "type": "boolean"
+                },
+                "perks": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": []
+                }
+              },
+              "required": [
+                "available"
+              ],
+              "additionalProperties": false
+            },
+            "playstation": {
+              "type": "object",
+              "properties": {
+                "available": {
+                  "type": "boolean"
+                },
+                "perks": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": []
+                }
+              },
+              "required": [
+                "available"
+              ],
+              "additionalProperties": false
+            },
+            "switch": {
+              "type": "object",
+              "properties": {
+                "available": {
+                  "type": "boolean"
+                },
+                "perks": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": []
+                }
+              },
+              "required": [
+                "available"
+              ],
+              "additionalProperties": false
+            },
+            "mobile": {
+              "type": "object",
+              "properties": {
+                "available": {
+                  "type": "boolean"
+                },
+                "perks": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "default": []
+                }
+              },
+              "required": [
+                "available"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "pc",
+            "xbox",
+            "playstation",
+            "switch",
+            "mobile"
+          ],
+          "additionalProperties": false
+        },
+        "saves": {
+          "type": "object",
+          "properties": {
+            "teslaExportSupported": {
+              "type": "boolean",
+              "default": false
+            },
+            "crossSaveNotes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            }
+          },
+          "additionalProperties": false
+        },
+        "features": {
+          "type": "object",
+          "properties": {
+            "localCoop": {
+              "type": "boolean",
+              "default": false
+            },
+            "onlineCoopNative": {
+              "type": "boolean",
+              "default": false
+            },
+            "onlineCoopWorkaround": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            },
+            "controllerRecommended": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "recommendedHardware": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "xbox_controller",
+              "ps5_dualsense",
+              "8bitdo_pro2",
+              "usb_c_cable",
+              "usb_hub",
+              "mobile_clip"
+            ]
+          },
+          "default": []
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "exclude": {
+          "type": "boolean",
+          "default": false
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "tesla",
+        "platforms",
+        "saves",
+        "features"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

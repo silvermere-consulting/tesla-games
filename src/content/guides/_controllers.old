@@ -1,0 +1,84 @@
+---
+import { affiliates } from "../../lib/affiliates";
+import "../../styles/global.css";
+
+export const prerender = true;
+
+const title = "Best Controllers for Tesla Arcade at Home";
+const description =
+  "Recommended controllers and accessories to recreate your Tesla gaming setup on PC, console, or mobile.";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" />
+  </head>
+  <body class="mx-auto max-w-3xl px-6 py-12">
+    <a class="underline text-sm" href="/">← Back home</a>
+    <h1 class="text-3xl font-bold mb-4">{title}</h1>
+    <p class="text-slate-600 mb-6">
+      The Tesla Arcade is designed for quick fun, but when you move those
+      games to PC, console, or mobile you’ll want the right controller. These
+      are our top recommendations — all work cross-platform.
+    </p>
+
+    <section class="mb-8">
+      <h2 class="text-xl font-semibold mb-2">Top Picks</h2>
+      <ul class="list-disc ml-6 space-y-2">
+        <li>
+          <strong>Xbox Wireless Controller</strong> —
+          Works seamlessly with Windows, macOS (via Bluetooth), Xbox, and Tesla.
+          <a href={affiliates.amazon("xbox_controller")} rel="sponsored nofollow">
+            Buy on Amazon
+          </a>
+        </li>
+        <li>
+          <strong>PlayStation DualSense (PS5) Controller</strong> —
+          Excellent build quality, haptics, widely supported across PC and PlayStation.
+          <a href={affiliates.amazon("ps5_dualsense")} rel="sponsored nofollow">
+            Buy on Amazon
+          </a>
+        </li>
+        <li>
+          <strong>8BitDo Pro 2</strong> —
+          A versatile retro-style pad that works with Switch, PC, and mobile.
+          <a href={affiliates.amazon("8bitdo_pro2")} rel="sponsored nofollow">
+            Buy on Amazon
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <section class="mb-8">
+      <h2 class="text-xl font-semibold mb-2">Accessories</h2>
+      <ul class="list-disc ml-6 space-y-2">
+        <li>
+          <strong>USB-C Cable</strong> — Reliable wired connection reduces input lag.
+          <a href={affiliates.amazon("usb_c_cable")} rel="sponsored nofollow">
+            Buy on Amazon
+          </a>
+        </li>
+        <li>
+          <strong>USB Hub</strong> — If your PC/console has limited ports, a powered hub helps.
+          <a href={affiliates.amazon("usb_hub")} rel="sponsored nofollow">
+            Buy on Amazon
+          </a>
+        </li>
+        <li>
+          <strong>Controller Clip for Mobile</strong> — Makes mobile play much easier.
+          <a href={affiliates.amazon("mobile_clip")} rel="sponsored nofollow">
+            Buy on Amazon
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <footer class="text-xs text-slate-500 mt-10">
+      This page uses Amazon affiliate links (tag: gamelocnet-21). We may earn a commission on purchases.
+    </footer>
+  </body>
+</html>

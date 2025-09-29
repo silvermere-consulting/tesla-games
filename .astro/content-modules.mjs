@@ -1,0 +1,26 @@
+
+export default new Map([
+["src/content/guides/controllers.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fguides%2Fcontrollers.mdx&astroContentModuleFlag=true")],
+["src/content/guides/switch-2.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fguides%2Fswitch-2.mdx&astroContentModuleFlag=true")],
+["src/content/games/backgammon.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fgames%2Fbackgammon.mdx&astroContentModuleFlag=true")],
+["src/content/games/2048.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fgames%2F2048.mdx&astroContentModuleFlag=true")],
+["src/content/games/beach-buggy-racing-2.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fgames%2Fbeach-buggy-racing-2.mdx&astroContentModuleFlag=true")],
+["src/content/games/boomerang-fu.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fgames%2Fboomerang-fu.mdx&astroContentModuleFlag=true")],
+["src/content/games/cat-quest.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fgames%2Fcat-quest.mdx&astroContentModuleFlag=true")],
+["src/content/games/cuphead.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fgames%2Fcuphead.mdx&astroContentModuleFlag=true")],
+["src/content/games/castle-doombad-classic.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fgames%2Fcastle-doombad-classic.mdx&astroContentModuleFlag=true")],
+["src/content/games/chess.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fgames%2Fchess.mdx&astroContentModuleFlag=true")],
+["src/content/games/fallout-shelter.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fgames%2Ffallout-shelter.mdx&astroContentModuleFlag=true")],
+["src/content/games/mahjong.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fgames%2Fmahjong.mdx&astroContentModuleFlag=true")],
+["src/content/games/stardew-valley.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fgames%2Fstardew-valley.mdx&astroContentModuleFlag=true")],
+["src/content/games/sky-force-reloaded.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fgames%2Fsky-force-reloaded.mdx&astroContentModuleFlag=true")],
+["src/content/games/sonic-the-hedgehog.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fgames%2Fsonic-the-hedgehog.mdx&astroContentModuleFlag=true")],
+["src/content/games/solitaire.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fgames%2Fsolitaire.mdx&astroContentModuleFlag=true")],
+["src/content/games/sudoku.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fgames%2Fsudoku.mdx&astroContentModuleFlag=true")],
+["src/content/games/the-battle-of-polytopia.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fgames%2Fthe-battle-of-polytopia.mdx&astroContentModuleFlag=true")],
+["src/content/games/vampire-survivors.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fgames%2Fvampire-survivors.mdx&astroContentModuleFlag=true")],
+["src/content/guides/arcade-replacements.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fguides%2Farcade-replacements.mdx&astroContentModuleFlag=true")],
+["src/content/guides/cross-saves.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fguides%2Fcross-saves.mdx&astroContentModuleFlag=true")],
+["src/content/guides/local-multiplayer.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fguides%2Flocal-multiplayer.mdx&astroContentModuleFlag=true")],
+["src/content/guides/budget-upgrade.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fguides%2Fbudget-upgrade.mdx&astroContentModuleFlag=true")]]);
+		

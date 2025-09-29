@@ -1,0 +1,11 @@
+{
+  "order": ["gmg","fanatical","gog","humble","amazon-switch","steam","ms","epic"],
+  "affiliateStores": ["gmg","fanatical","gog","humble","amazon-switch"],
+  "amazonTag": "gamelocnet-21",
+  "partners": {
+    "gmg": { "program": "awin", "id": "YOUR_GMG_ID" },
+    "fanatical": { "program": "impact", "id": "YOUR_IMPACT_ID" },
+    "humble": { "partner": "YOUR_HUMBLE_PARTNER" },
+    "epic": { "creatorId": "YOUR_CREATOR_CODE" }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {},
+    "jsx": "preserve",
+    "jsxImportSource": "react",
+    "target": "ES2020",
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
+    "types": [
+      "astro/client"
+    ]
+  }
+}
