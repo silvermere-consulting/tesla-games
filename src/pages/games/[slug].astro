@@ -2,6 +2,7 @@
 import "../../styles/global.css";
 import GameDetail from "../../components/GameDetail.astro";
 import { getCollection } from "astro:content";
+import HeadExtras from "../../components/HeadExtras.astro";
 
 export const prerender = true;
 
@@ -20,10 +21,17 @@ const description = entry.data.short ?? `Where to play ${entry.data.title} on PC
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <HeadExtras />
     <meta charset="utf-8" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={`https://tesla-games.netlify.app${Astro.url.pathname}`} />
+    {entry?.data?.coverImage && <meta property="og:image" content={entry.data.coverImage} />}
+    <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body class="mx-auto max-w-3xl px-6 py-12">
     <a class="underline text-sm" href="/games">← All games</a>

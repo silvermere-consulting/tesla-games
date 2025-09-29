@@ -1,10 +1,9 @@
-import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
-import mdx from '@astrojs/mdx';
+// astro.config.mjs
+import { defineConfig } from "astro/config";
+import mdx from "@astrojs/mdx";
+import sitemap from "@astrojs/sitemap"; // <-- you must import it
 
-// https://docs.astro.build/en/guides/integrations-guide/
 export default defineConfig({
-  integrations: [tailwind(), mdx()],
-  output: 'static',
-  site: 'https://example.com'
+  site: "https://tesla-games.netlify.app", // required for sitemap
+  integrations: [mdx(), sitemap()],
 });

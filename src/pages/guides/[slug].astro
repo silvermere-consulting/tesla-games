@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import "../../styles/global.css";
+import HeadExtras from "../../components/HeadExtras.astro";
 
 export const prerender = true;
 
@@ -19,9 +20,16 @@ const description = entry.data.seoDescription ?? entry.data.short ?? `Guide: ${e
 <!doctype html>
 <html lang="en">
   <head>
+    <HeadExtras />
     <meta charset="utf-8" />
     <title>{title} — Guides</title>
     <meta name="description" content={description} />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={`https://tesla-games.netlify.app${Astro.url.pathname}`} />
+    {entry?.data?.coverImage && <meta property="og:image" content={entry.data.coverImage} />}
+    <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body class="mx-auto max-w-3xl px-6 py-12">
     <a class="underline text-sm" href="/guides">← All guides</a>

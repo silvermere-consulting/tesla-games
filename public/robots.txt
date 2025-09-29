@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://tesla-games.netlify.app/sitemap-index.xml

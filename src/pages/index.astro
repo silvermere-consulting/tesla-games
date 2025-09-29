@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import "../styles/global.css";
+import HeadExtras from "../components/HeadExtras.astro";
 
 export const prerender = true;
 
@@ -11,6 +12,7 @@ const games = entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
 
 // NEW: load guides
 const allGuides = await getCollection("guides");
+const ogImage = games[0]?.data.coverImage ?? "/favicon.svg";
 const guides = allGuides
   .filter(g => !g.data.exclude)
   .sort((a, b) => {
@@ -32,9 +34,16 @@ const description = "Pick your game to see Tesla-specific notes, home-platform d
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <HeadExtras />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={`https://tesla-games.netlify.app${Astro.url.pathname}`} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body class="min-h-screen">
     <main class="mx-auto max-w-6xl px-6 py-12">
