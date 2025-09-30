@@ -5,14 +5,43 @@ import HeadExtras from "../components/HeadExtras.astro";
 
 export const prerender = true;
 
-const entries = await getCollection("games");
+const gameEntries = await getCollection("games");
 
-// A→Z by title
-const games = entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
+const normalize = (t) => String(t ?? "").toLowerCase().trim().replace(/[-\s]+/g, "_");
+
+
+
+// harden: treat these as low priority even if tags missing
+const LOW_SLUGS = new Set(["2048", "sudoku", "solitaire", "mahjong", "chess", "backgammon"]);
+
+const isLow = (g) => {
+  const tagArr = (g?.data?.tags ?? []).map(normalize);
+  return tagArr.includes("low_priority") || tagArr.includes("low-priority") || LOW_SLUGS.has(g.slug);
+};
+
+const gamesSorted = [...gameEntries].sort(
+  (a, b) => (isLow(a) ? 1 : 0) - (isLow(b) ? 1 : 0)
+         || a.data.title.localeCompare(b.data.title)
+);
+
+
+
+
+
+// optional: pick an OG image from the first non-low-priority game
+//const ogImage = gamesSorted.find((g) => rank(g) === 0)?.data?.coverImage ?? "/favicon.svg";
+
+
+/** (Optional) DEBUG: check order in server logs */
+console.log("Games order AFTER SORT:", gamesSorted.map(g => `${isLow(g) ? "LOW " : "NORM"} ${g.data.title}`));
+
+
+// Sort A→Z by title
+// const games = entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
 
 // NEW: load guides
 const allGuides = await getCollection("guides");
-const ogImage = games[0]?.data.coverImage ?? "/favicon.svg";
+const ogImage = gamesSorted[0]?.data.coverImage ?? "/favicon.svg";
 const guides = allGuides
   .filter(g => !g.data.exclude)
   .sort((a, b) => {
@@ -59,7 +88,7 @@ const description = "Pick your game to see Tesla-specific notes, home-platform d
         </div>
 
         <ul class="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {games.map(g => (
+          {gamesSorted.map((g) => (
             <li class="group border rounded-xl overflow-hidden hover:shadow-sm transition">
               <a href={`/games/${g.slug}`} class="block" data-umami-event="Game Card Click" data-umami-event-source="home" data-umami-event-guide={g.slug} data-umami-event-title={g.data.title}>
                 {g.data.coverImage
