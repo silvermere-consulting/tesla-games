@@ -7,7 +7,7 @@ import HeadExtras from "../../components/HeadExtras.astro";
 export const prerender = true;
 
 export async function getStaticPaths() {
-  const games = await getCollection("games");
+  const games = (await getCollection("games")).filter((entry) => !entry.data.exclude);
   return games.map((entry) => ({
     params: { slug: entry.slug },
     props: { entry }

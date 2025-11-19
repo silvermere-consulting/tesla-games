@@ -5,7 +5,7 @@ import "../../styles/global.css";
 export const prerender = true;
 
 // Load all games from the content collection
-const entries = await getCollection("games");
+const entries = (await getCollection("games")).filter((entry) => !entry.data.exclude);
 
 // Sort alphabetically
 const games = entries.sort((a, b) =>
