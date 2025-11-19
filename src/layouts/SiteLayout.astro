@@ -1,0 +1,81 @@
+---
+import HeadExtras from "../components/HeadExtras.astro";
+import "../styles/global.css";
+
+const {
+  title = "Games On The Move",
+  description = "Guides, game breakdowns, and setup ideas for portable and travel gaming.",
+  ogImage = "/favicon.svg",
+  ogType = "website",
+  mainClass = "max-w-6xl px-6 py-12",
+} = Astro.props;
+
+const siteName = "Games On The Move";
+const pageTitle = title === siteName ? title : `${title} — ${siteName}`;
+const canonicalBase = "https://gamesonthemove.com";
+const canonicalUrl = `${canonicalBase}${Astro.url.pathname}`;
+const navLinks = [
+  { href: "/guides", label: "Guides" },
+  { href: "/games", label: "Games" },
+  { href: "/tesla", label: "Tesla" },
+  { href: "/steam-deck", label: "Steam Deck" },
+  { href: "/switch", label: "Switch" },
+  { href: "/travel-setups", label: "Travel setups" },
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <HeadExtras />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body class="bg-[var(--brand-soft)] text-[var(--brand-slate)] antialiased">
+    <a href="#content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-white text-[var(--brand-slate)] px-4 py-2 rounded">Skip to content</a>
+    <header class="bg-white/95 backdrop-blur border-b border-slate-200">
+      <div class="mx-auto max-w-6xl px-6 py-4 flex flex-wrap items-center gap-4 justify-between">
+        <a href="/" class="flex items-center gap-2">
+          <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--brand-blue)] text-white font-bold">GO</span>
+          <div>
+            <p class="text-base font-semibold text-[var(--brand-slate)]">Games On The Move</p>
+            <p class="text-sm text-slate-500 leading-tight">Play anywhere. Anytime.</p>
+          </div>
+        </a>
+        <nav class="flex flex-wrap gap-4 text-sm font-medium">
+          {navLinks.map((item) => (
+            <a href={item.href} class="text-slate-600 hover:text-[var(--brand-blue)] transition-colors">
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </header>
+
+    <main id="content" class={`mx-auto w-full ${mainClass}`}>
+      <slot />
+    </main>
+
+    <footer class="mt-12 bg-[var(--brand-slate)] text-white">
+      <div class="mx-auto max-w-6xl px-6 py-10 grid gap-6 md:grid-cols-2">
+        <div>
+          <p class="text-lg font-semibold">Games On The Move</p>
+          <p class="text-sm text-slate-200 mt-2">
+            Friendly, practical guides for rebuilding Tesla Arcade lineups, mastering portable consoles, and gaming on the go.
+          </p>
+        </div>
+        <div class="text-sm text-slate-300 space-y-2">
+          <p>This site uses affiliate links to authorised stores. Tesla™ is a trademark of Tesla, Inc.</p>
+          <p>Need something specific? Email hello@gamesonthemove.com.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

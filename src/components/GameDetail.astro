@@ -14,7 +14,7 @@ const yn = (v?: boolean) => (v ? "Yes" : "No");
 const list = (a?: string[]) => (a && a.length ? a.join(", ") : "—");
 
 const plat = [
-  { label: "Tesla",       available: entry.data.tesla.available,       perks: list(entry.data.tesla.notes) },
+  { label: "Tesla (in-car)",       available: entry.data.tesla.available,       perks: list(entry.data.tesla.notes) },
   { label: "PC",          available: P.pc.available,                    perks: list(P.pc.perks) },
   { label: "Xbox",        available: P.xbox.available,                  perks: list(P.xbox.perks) },
   { label: "PlayStation", available: P.playstation.available,           perks: list(P.playstation.perks) },
@@ -36,13 +36,13 @@ const plat = [
     {Content && <div class="prose prose-slate max-w-none"><Content /></div>}
   </header>
 
-  <!-- 2) TESLA vs PLATFORM COMPARISON -->
+  <!-- 2) PLATFORM COMPARISON -->
   <section class="space-y-3">
-    <h2 class="text-xl font-semibold">Tesla vs Platform comparison</h2>
+    <h2 class="text-xl font-semibold">Platform comparison at a glance</h2>
 
     <div class="grid md:grid-cols-2 gap-4">
       <div class="p-4 border rounded-xl">
-        <h3 class="font-semibold mb-2">Tesla version</h3>
+        <h3 class="font-semibold mb-2">Tesla in-car version</h3>
         <ul class="list-disc ml-6">
           <li>{entry.data.tesla.available ? "Available in Tesla Arcade" : "Not available in Tesla Arcade"}</li>
           {entry.data.tesla.scope && <li>{entry.data.tesla.scope}</li>}
@@ -61,7 +61,7 @@ const plat = [
     </div>
 
     <div class="overflow-x-auto">
-      <table class="w-full text-sm border rounded-xl overflow-hidden">
+      <table class="w-full text-sm border rounded-xl overflow-hidden bg-white">
         <thead class="bg-slate-50 text-slate-700">
           <tr><th class="text-left p-3">Platform</th><th class="text-left p-3">Available</th><th class="text-left p-3">Key perks / differences</th></tr>
         </thead>
@@ -80,7 +80,7 @@ const plat = [
 
   <!-- 3) CROSS-SAVES -->
   <section class="p-4 border rounded-xl">
-    <h2 class="text-xl font-semibold mb-2">Cross-saves</h2>
+    <h2 class="text-xl font-semibold mb-2">Cross-save & travel progress</h2>
     <ul class="list-disc ml-6">
       <li>Tesla → home export supported: {yn(entry.data.saves.teslaExportSupported)}</li>
       {entry.data.saves.crossSaveNotes.map(n => <li>{n}</li>)}
@@ -89,7 +89,7 @@ const plat = [
 
   <!-- 4) FEATURES -->
   <section class="p-4 border rounded-xl">
-    <h2 class="text-xl font-semibold mb-2">Features</h2>
+    <h2 class="text-xl font-semibold mb-2">Features & inputs</h2>
     <ul class="list-disc ml-6">
       <li>Local co-op: {yn(entry.data.features.localCoop)}</li>
       <li>Online co-op (native): {yn(entry.data.features.onlineCoopNative)}</li>

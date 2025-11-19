@@ -1,0 +1,77 @@
+---
+import { getCollection } from "astro:content";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import "../../styles/global.css";
+
+export const prerender = true;
+
+const title = "Legion Go";
+const description = "Lenovo Legion Go tips: detachable controllers, big screens, and portable monitor ideas for hotel setups.";
+
+const allGuides = await getCollection("guides");
+const guideSlugs = new Set(["arcade-replacements", "local-multiplayer"]);
+const guides = allGuides.filter((g) => guideSlugs.has(g.slug));
+
+const games = await getCollection("games");
+const legionReady = games.filter((g) => g.data.platforms.pc.available).slice(4, 8);
+---
+<SiteLayout title={`${title} hub`} description={description}>
+  <header class="mb-8">
+    <a class="text-sm text-[var(--brand-blue)] font-semibold" href="/">← Back home</a>
+    <p class="text-xs uppercase tracking-widest text-slate-500">Platform hub</p>
+    <h1 class="text-3xl font-bold mt-2 mb-2 text-[var(--brand-slate)]">Legion Go setups</h1>
+    <p class="text-slate-600 max-w-3xl">{description}</p>
+  </header>
+
+  <section class="grid gap-6 lg:grid-cols-2">
+    <div class="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+      <h2 class="text-2xl font-semibold text-[var(--brand-slate)]">Detachable controllers</h2>
+      <ul class="mt-4 space-y-3 text-slate-600">
+        <li>Attach to a rear-seat mount to mimic Tesla steering-wheel play.</li>
+        <li>Use FPS mode as a portable mouse for cloud-launcher tweaks.</li>
+        <li>Pair extra Bluetooth pads for four-player party games.</li>
+      </ul>
+    </div>
+    <div class="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+      <h2 class="text-2xl font-semibold text-[var(--brand-slate)]">Display ideas</h2>
+      <ul class="mt-4 space-y-3 text-slate-600">
+        <li>14" portable USB-C monitor for hotel desks.</li>
+        <li>HDMI capture card to use a laptop as a screen.</li>
+        <li>Kickstand mode with detachable controllers for tabletop co-op.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="mt-12">
+    <h2 class="text-2xl font-semibold text-[var(--brand-slate)] mb-4">Guides</h2>
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {guides.map((g) => (
+        <li class="border border-slate-100 rounded-2xl bg-white shadow-sm hover:shadow-md transition">
+          <a href={`/guides/${g.slug}`} class="block p-4">
+            <p class="text-xs uppercase tracking-widest text-slate-500">Guide</p>
+            <h3 class="text-lg font-semibold text-[var(--brand-slate)] mt-2">{g.data.title}</h3>
+            {g.data.short && <p class="text-sm text-slate-600 mt-1 line-clamp-3">{g.data.short}</p>}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="mt-12">
+    <div class="flex items-baseline justify-between mb-4">
+      <h2 class="text-2xl font-semibold text-[var(--brand-slate)]">Games to start with</h2>
+      <a href="/games" class="text-sm font-semibold text-[var(--brand-blue)]">Browse library</a>
+    </div>
+    <ul class="grid gap-5 sm:grid-cols-2">
+      {legionReady.map((g) => (
+        <li class="border border-slate-100 rounded-2xl bg-white shadow-sm hover:shadow-md transition">
+          <a href={`/games/${g.slug}`} class="block p-4">
+            <h3 class="font-semibold text-[var(--brand-slate)]">{g.data.title}</h3>
+            <p class="text-xs text-slate-500 mt-1">PC / Legion ready</p>
+            {g.data.short && <p class="text-sm text-slate-600 mt-2 line-clamp-3">{g.data.short}</p>}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</SiteLayout>

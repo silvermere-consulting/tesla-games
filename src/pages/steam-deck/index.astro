@@ -1,0 +1,77 @@
+---
+import { getCollection } from "astro:content";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import "../../styles/global.css";
+
+export const prerender = true;
+
+const title = "Steam Deck";
+const description = "Use Valve's handheld or ROG-style PCs as the ultimate Tesla Arcade replacement with offline installs, mods, and docks.";
+
+const allGuides = await getCollection("guides");
+const guideSlugs = new Set(["arcade-replacements", "budget-upgrade", "controllers"]);
+const guides = allGuides.filter((g) => guideSlugs.has(g.slug));
+
+const games = await getCollection("games");
+const portableFriendly = games.filter((g) => g.data.platforms.pc.available).slice(0, 6);
+---
+<SiteLayout title={`${title} hub`} description={description}>
+  <header class="mb-8">
+    <a class="text-sm text-[var(--brand-blue)] font-semibold" href="/">← Back home</a>
+    <p class="text-xs uppercase tracking-widest text-slate-500">Platform hub</p>
+    <h1 class="text-3xl font-bold mt-2 mb-2 text-[var(--brand-slate)]">Steam Deck & PC handheld setups</h1>
+    <p class="text-slate-600 max-w-3xl">{description}</p>
+  </header>
+
+  <section class="grid gap-6 lg:grid-cols-2">
+    <div class="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+      <h2 class="text-2xl font-semibold text-[var(--brand-slate)]">Why it works</h2>
+      <ul class="mt-4 space-y-3 text-slate-600">
+        <li>🎮 Native access to Steam, Epic, Game Pass, and emulators.</li>
+        <li>🧳 USB-C docks turn the Deck into a living-room console during breaks.</li>
+        <li>☁️ Supports Xbox Cloud Gaming, GeForce NOW, and Remote Play for long drives.</li>
+      </ul>
+    </div>
+    <div class="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+      <h2 class="text-2xl font-semibold text-[var(--brand-slate)]">Starter kit</h2>
+      <ul class="mt-4 space-y-3 text-slate-600">
+        <li>✓ 65W USB-C car charger with PD.</li>
+        <li>✓ Low-profile dock + HDMI for hotel TVs.</li>
+        <li>✓ Bluetooth controller (8BitDo or Xbox) for couch play.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="mt-12">
+    <h2 class="text-2xl font-semibold text-[var(--brand-slate)] mb-4">Recommended guides</h2>
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {guides.map((g) => (
+        <li class="border border-slate-100 rounded-2xl bg-white shadow-sm hover:shadow-md transition">
+          <a href={`/guides/${g.slug}`} class="block p-4">
+            <p class="text-xs uppercase tracking-widest text-slate-500">Guide</p>
+            <h3 class="text-lg font-semibold text-[var(--brand-slate)] mt-2">{g.data.title}</h3>
+            {g.data.short && <p class="text-sm text-slate-600 mt-1 line-clamp-3">{g.data.short}</p>}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="mt-12">
+    <div class="flex items-baseline justify-between mb-4">
+      <h2 class="text-2xl font-semibold text-[var(--brand-slate)]">Deck-friendly games</h2>
+      <a href="/games" class="text-sm font-semibold text-[var(--brand-blue)]">Browse library</a>
+    </div>
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {portableFriendly.map((g) => (
+        <li class="border border-slate-100 rounded-2xl bg-white shadow-sm hover:shadow-md transition">
+          <a href={`/games/${g.slug}`} class="block p-4">
+            <h3 class="font-semibold text-[var(--brand-slate)]">{g.data.title}</h3>
+            <p class="text-xs text-slate-500 mt-1">PC / Deck ready</p>
+            {g.data.short && <p class="text-sm text-slate-600 mt-2 line-clamp-3">{g.data.short}</p>}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</SiteLayout>

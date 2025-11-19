@@ -1,0 +1,85 @@
+---
+import { getCollection } from "astro:content";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import "../../styles/global.css";
+
+export const prerender = true;
+
+const title = "Travel setups";
+const description = "Road-trip gaming, hotel rigs, power banks, portable screens, and controllers built for motion.";
+
+const allGuides = await getCollection("guides");
+const guideSlugs = new Set(["controllers", "local-multiplayer", "budget-upgrade"]);
+const guides = allGuides.filter((g) => guideSlugs.has(g.slug));
+
+const topics = [
+  {
+    title: "Road-trip entertainment kits",
+    bullets: [
+      "Rear-seat mounts for Switch, Deck, iPad",
+      "12V inverters vs USB-C PD",
+      "How to keep controllers charged"
+    ],
+  },
+  {
+    title: "Hotel / Airbnb gaming",
+    bullets: [
+      "Portable monitors & foldable stands",
+      "Travel routers + LTE hotspots",
+      "Packing lists for HDMI cables, docks, SD cards"
+    ],
+  },
+  {
+    title: "Cloud gaming on the move",
+    bullets: [
+      "Game Pass, GeForce NOW, PS Remote Play",
+      "Using eSIM plans when Wi-Fi fails",
+      "Controller grips for phones"
+    ],
+  },
+];
+---
+<SiteLayout title={title} description={description}>
+  <header class="mb-8">
+    <a class="text-sm text-[var(--brand-blue)] font-semibold" href="/">← Back home</a>
+    <p class="text-xs uppercase tracking-widest text-slate-500">Evergreen hub</p>
+    <h1 class="text-3xl font-bold mt-2 mb-2 text-[var(--brand-slate)]">Travel gaming setups</h1>
+    <p class="text-slate-600 max-w-3xl">{description}</p>
+  </header>
+
+  <section class="grid gap-6 lg:grid-cols-3">
+    {topics.map((topic) => (
+      <div class="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+        <h2 class="text-xl font-semibold text-[var(--brand-slate)]">{topic.title}</h2>
+        <ul class="mt-4 space-y-2 text-sm text-slate-600">
+          {topic.bullets.map((item) => (
+            <li class="flex gap-2">
+              <span class="text-[var(--brand-teal)]">•</span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </section>
+
+  <section class="mt-12">
+    <h2 class="text-2xl font-semibold text-[var(--brand-slate)] mb-4">Starter guides</h2>
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {guides.map((g) => (
+        <li class="border border-slate-100 rounded-2xl bg-white shadow-sm hover:shadow-md transition">
+          <a href={`/guides/${g.slug}`} class="block p-4">
+            <p class="text-xs uppercase tracking-widest text-slate-500">Guide</p>
+            <h3 class="text-lg font-semibold text-[var(--brand-slate)] mt-2">{g.data.title}</h3>
+            {g.data.short && <p class="text-sm text-slate-600 mt-1 line-clamp-3">{g.data.short}</p>}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="mt-12 rounded-3xl border border-dashed border-slate-300 bg-slate-50 p-6">
+    <h2 class="text-2xl font-semibold text-[var(--brand-slate)]">Contribute a setup</h2>
+    <p class="text-slate-600 mt-2">Have a portable rig we should feature? Send photos, gear lists, or affiliate-friendly ideas to hello@gamesonthemove.com.</p>
+  </section>
+</SiteLayout>

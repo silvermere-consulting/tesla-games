@@ -3,11 +3,24 @@
 @tailwind utilities;
 
 :root {
-  --bg: #0b1220;
-  --fg: #e6edf3;
+  --brand-blue: #3763ff;
+  --brand-teal: #41d8c0;
+  --brand-slate: #1e293b;
+  --brand-soft: #f8fafc;
+  --brand-yellow: #ffd847;
 }
+
 html, body {
-  background: white;
-  color: #0f172a;
+  background: var(--brand-soft);
+  color: var(--brand-slate);
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
-a { text-decoration: underline; }
+
+a {
+  color: var(--brand-blue);
+  text-decoration: underline;
+}
+
+::selection {
+  background: rgba(55, 99, 255, 0.2);
+}

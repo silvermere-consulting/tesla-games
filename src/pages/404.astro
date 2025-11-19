@@ -1,11 +1,21 @@
 ---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import "../styles/global.css";
+
 export const prerender = true;
 ---
-<!doctype html>
-<html lang="en">
-<head><meta charset="utf-8" /><title>Page not found</title></head>
-<body class="mx-auto max-w-3xl px-6 py-16 text-center">
-  <h1 class="text-3xl font-bold mb-2">404 — Not found</h1>
-  <p class="text-slate-600">Try the <a class="underline" href="/">home page</a> or <a class="underline" href="/games">all games</a>.</p>
-</body>
-</html>
+<SiteLayout title="Page not found" description="The page you’re looking for moved. Head back to the portable gaming hub.">
+  <div class="text-center py-24">
+    <p class="text-sm uppercase tracking-widest text-slate-500">404</p>
+    <h1 class="text-4xl font-bold mt-2 mb-4 text-[var(--brand-slate)]">We can't find that page</h1>
+    <p class="text-slate-600 mb-6">Try the home page or jump straight into the game library.</p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <a class="inline-flex items-center justify-center rounded-full bg-[var(--brand-blue)] px-6 py-3 text-white font-semibold" href="/">
+        Go home
+      </a>
+      <a class="inline-flex items-center justify-center rounded-full border border-slate-300 px-6 py-3 font-semibold text-[var(--brand-slate)]" href="/games">
+        View all games
+      </a>
+    </div>
+  </div>
+</SiteLayout>

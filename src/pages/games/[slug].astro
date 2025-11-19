@@ -2,7 +2,7 @@
 import "../../styles/global.css";
 import GameDetail from "../../components/GameDetail.astro";
 import { getCollection } from "astro:content";
-import HeadExtras from "../../components/HeadExtras.astro";
+import SiteLayout from "../../layouts/SiteLayout.astro";
 
 export const prerender = true;
 
@@ -15,26 +15,11 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const title = `${entry.data.title} — Recreate your Tesla game at home`;
-const description = entry.data.short ?? `Where to play ${entry.data.title} on PC/console, and how it differs from Tesla.`;
+const title = entry.data.title;
+const description = entry.data.short ?? `Where to play ${entry.data.title} on PC, Deck, Switch, and beyond.`;
+const ogImage = entry?.data?.coverImage ?? "/favicon.svg";
 ---
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <HeadExtras />
-    <meta charset="utf-8" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <link rel="icon" href="/favicon.svg" />
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={`https://tesla-games.netlify.app${Astro.url.pathname}`} />
-    {entry?.data?.coverImage && <meta property="og:image" content={entry.data.coverImage} />}
-    <meta name="twitter:card" content="summary_large_image" />
-  </head>
-  <body class="mx-auto max-w-3xl px-6 py-12">
-    <a class="underline text-sm" href="/games">← All games</a>
-    <GameDetail entry={entry} />
-  </body>
-</html>
+<SiteLayout title={title} description={description} ogImage={ogImage} ogType="article" mainClass="max-w-3xl px-6 py-10">
+  <a class="text-sm text-[var(--brand-blue)] font-semibold" href="/games">← All games</a>
+  <GameDetail entry={entry} />
+</SiteLayout>
