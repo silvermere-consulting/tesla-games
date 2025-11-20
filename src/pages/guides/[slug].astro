@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import "../../styles/global.css";
 import SiteLayout from "../../layouts/SiteLayout.astro";
+import GuideFeedback from "../../components/GuideFeedback.astro";
 
 export const prerender = true;
 
@@ -13,6 +14,7 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
+const pagePath = Astro.url?.pathname ?? `/guides/${entry.slug}`;
 const { Content } = await entry.render();
 const title = entry.data.seoTitle ?? entry.data.title;
 const description = entry.data.seoDescription ?? entry.data.short ?? `Guide: ${entry.data.title}`;
@@ -53,4 +55,5 @@ const ogImage = entry?.data?.coverImage ?? "/favicon.svg";
       </aside>
     )}
   </article>
+  <GuideFeedback pagePath={pagePath} />
 </SiteLayout>

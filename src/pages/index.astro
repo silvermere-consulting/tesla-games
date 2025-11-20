@@ -167,7 +167,7 @@ const travelIdeas = [
       <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {guides.map((g) => (
           <li class="rounded-2xl border border-slate-100 bg-white overflow-hidden shadow-sm hover:shadow-lg transition">
-            <a href={`/guides/${g.slug}`} class="flex flex-col h-full" data-umami-event="Guide Card Click" data-umami-event-source="home" data-umami-event-guide={g.slug} data-umami-event-title={g.data.title}>
+          <a href={`/guides/${g.slug}`} class="flex flex-col h-full" data-umami-event="Guide Card Click" data-umami-event-source="home" data-umami-event-guide={g.slug} data-umami-event-title={g.data.title}>
               {g.data.coverImage ? (
                 <img src={g.data.coverImage} alt="" class="w-full aspect-[16/9] object-cover" loading="lazy" width="640" height="360" />
               ) : (
@@ -193,7 +193,13 @@ const travelIdeas = [
     <ul class="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {featuredGames.map((g) => (
         <li class="group border border-slate-100 rounded-2xl overflow-hidden bg-white hover:shadow-md transition">
-          <a href={`/games/${g.slug}`} class="block" data-umami-event="Game Card Click" data-umami-event-source="home" data-umami-event-guide={g.slug} data-umami-event-title={g.data.title}>
+          <a
+            href={`/games/${g.slug}`}
+            class="block"
+            data-umami-event="game-card-click"
+            data-umami-event-game={g.slug}
+            data-umami-event-source="home"
+          >
             {g.data.coverImage ? (
               <img
                 src={g.data.coverImage}

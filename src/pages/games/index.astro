@@ -21,7 +21,13 @@ const description = "Every Tesla Arcade title we cover plus portable-friendly ve
   <ul class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
     {games.map((g) => (
       <li class="border border-slate-100 rounded-2xl p-4 bg-white shadow-sm hover:shadow-md transition">
-        <a class="block" href={`/games/${g.slug}`}>
+        <a
+          class="block"
+          href={`/games/${g.slug}`}
+          data-umami-event="game-card-click"
+          data-umami-event-game={g.slug}
+          data-umami-event-source="games-index"
+        >
           {g.data.coverImage ? (
             <img
               src={g.data.coverImage}

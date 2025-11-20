@@ -54,7 +54,21 @@ const plat = [
       <div class="p-4 border rounded-xl">
         <h3 class="font-semibold mb-2">Where to buy / play at home</h3>
         {links.length
-          ? <ul class="list-disc ml-6">{links.map(l => <li><a class="underline" href={l.url} rel="noopener nofollow sponsored">{l.label}</a></li>)}</ul>
+          ? <ul class="list-disc ml-6">{links.map(l => (
+            <li>
+              <a
+                class="underline"
+                href={l.url}
+                target="_blank"
+                rel="noopener noreferrer sponsored"
+                data-umami-event="affiliate-click"
+                data-umami-event-game={entry.slug}
+                data-umami-event-store={l.store}
+              >
+                {l.label}
+              </a>
+            </li>
+          ))}</ul>
           : <p class="text-slate-600">Store links coming soon.</p>
         }
       </div>
@@ -106,7 +120,19 @@ const plat = [
       <h2 class="text-xl font-semibold mb-2">Recommended hardware</h2>
       <ul class="list-disc ml-6">
         {entry.data.recommendedHardware.map((key) => (
-          <li><a class="underline" href={affiliates.amazon(key)} rel="sponsored nofollow">{key.replaceAll("_"," ")}</a></li>
+          <li>
+            <a
+              class="underline"
+              href={affiliates.amazon(key)}
+              target="_blank"
+              rel="noopener noreferrer sponsored nofollow"
+              data-umami-event="affiliate-click"
+              data-umami-event-game={entry.slug}
+              data-umami-event-store="amazon"
+            >
+              {key.replaceAll("_"," ")}
+            </a>
+          </li>
         ))}
       </ul>
     </section>
