@@ -8,11 +8,11 @@ export const prerender = true;
 const title = "Nintendo Switch";
 const description = "Carry Tesla Arcade favourites on flights, trains, and family trips with Switch or Switch 2.";
 
-const allGuides = await getCollection("guides");
+const allGuides = (await getCollection("guides")).filter((entry) => !entry.data.exclude);
 const guideSlugs = new Set(["switch-2", "budget-upgrade", "controllers"]);
 const guides = allGuides.filter((g) => guideSlugs.has(g.slug));
 
-const games = await getCollection("games");
+const games = (await getCollection("games")).filter((entry) => !entry.data.exclude);
 const switchFriendly = games.filter((g) => g.data.platforms.switch?.available).slice(0, 6);
 ---
 <SiteLayout title={`${title} hub`} description={description}>

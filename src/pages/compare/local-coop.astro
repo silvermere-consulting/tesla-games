@@ -5,7 +5,7 @@ import "../../styles/global.css";
 
 export const prerender = true;
 
-const games = await getCollection("games");
+const games = (await getCollection("games")).filter((entry) => !entry.data.exclude);
 const filtered = games.filter(g =>
   g.data.features.localCoop &&
   g.data.platforms.pc.available &&

@@ -1,0 +1,191 @@
+{
+  "cuphead": {
+    "name": "Cuphead",
+    "stores": {
+      "gmg": { "query": "Cuphead" },
+      "fanatical": { "query": "Cuphead" },
+      "gog": { "query": "Cuphead" },
+      "humble": { "query": "Cuphead" },
+      "steam": { "query": "Cuphead" },
+      "ms": { "query": "Cuphead" },
+      "amazon-switch": { "query": "Cuphead"}
+    }
+  },
+  "fallout-shelter": {
+    "name": "Fallout Shelter",
+    "stores": {
+      "gmg": { "query": "Fallout Shelter" },
+      "gog": { "query": "Fallout Shelter" },
+      "humble": { "query": "Fallout Shelter" },
+      "steam": { "query": "Fallout Shelter" },
+      "ms": { "query": "Fallout Shelter" },
+      "amazon-switch": { "query": "Fallout Shelter"}
+    }
+  },
+  "the-battle-of-polytopia": {
+    "name": "The Battle of Polytopia",
+    "stores": {
+      "gmg": { "query": "The Battle of Polytopia" },
+      "fanatical": { "query": "The Battle of Polytopia" },
+      "gog": { "query": "The Battle of Polytopia" },
+      "humble": { "query": "The Battle of Polytopia" },
+      "steam": { "query": "The Battle of Polytopia" },
+      "ms": { "query": "The Battle of Polytopia" },
+      "epic": { "query": "The Battle of Polytopia" },
+      "amazon-switch": { "query": "Nintendo Switch The Battle of Polytopia"}
+    }
+  },
+  "sonic-the-hedgehog": {
+    "name": "Sonic the Hedgehog",
+    "stores": {
+      "gmg": { "query": "Sega Mega Drive Classics" },
+      "fanatical": { "query": "Sega Mega Drive Classics" },
+      "gog": { "query": "Sega Mega Drive Classics" },
+      "humble": { "query": "Sega Mega Drive Classics" },
+      "steam": { "query": "Sega Mega Drive Classics" },
+      "amazon-switch": { "query": "Nintendo Switch Sega Mega Drive Classics"}
+    }
+  },
+  "beach-buggy-racing-2": {
+    "name": "Beach Buggy Racing 2",
+    "stores": {
+      "steam": { "query": "Beach Buggy Racing 2" },
+      "gmg": { "query": "Beach Buggy Racing 2" },
+      "fanatical": { "query": "Beach Buggy Racing 2" },
+      "humble": { "query": "Beach Buggy Racing 2" },
+      "amazon-switch": { "query": "Nintendo Switch Beach Buggy Racing 2"}
+
+    }
+  },
+  "sky-force-reloaded": {
+    "name": "Sky Force Reloaded",
+    "stores": {
+      "steam": { "query": "Sky Force Reloaded" },
+      "gmg": { "query": "Sky Force Reloaded" },
+      "fanatical": { "query": "Sky Force Reloaded" },
+      "gog": { "query": "Sky Force Reloaded" },
+      "humble": { "query": "Sky Force Reloaded" },
+      "amazon-switch": { "query": "Nintendo Sky Force Reloaded" }
+    }
+  },
+
+  "boomerang-fu": {
+    "name": "Boomerang Fu",
+    "stores": {
+      "steam": { "query": "Boomerang Fu" },
+      "gmg": { "query": "Boomerang Fu" },
+      "fanatical": { "query": "Boomerang Fu" },
+      "humble": { "query": "Boomerang Fu" },
+      "epic": { "query": "Boomerang Fu" },
+      "amazon-switch": { "query": "Nintendo Switch Boomerang Fu" }
+    }
+  },
+  "castle-doombad-classic": {
+    "name": "Castle Doombad Classic",
+    "stores": {
+      "steam": { "query": "Castle Doombad" },
+      "gog": { "query": "Castle Doombad" },
+      "humble": { "query": "Castle Doombad" },
+      "amazon-switch": { "query": "Nintendo Switch Castle Doombad" }
+    }
+  },
+  "vampire-survivors": {
+    "name": "Vampire Survivors",
+    "stores": {
+      "steam": { "query": "Vampire Survivors" },
+      "gmg": { "query": "Vampire Survivors" },
+      "fanatical": { "query": "Vampire Survivors" },
+      "humble": { "query": "Vampire Survivors" },
+      "gog": { "query": "Vampire Survivors" },
+      "amazon-switch": { "query": "Nintendo Switch Vampire Survivors" }
+    }
+  },
+  "cat-quest": {
+    "name": "Cat Quest",
+    "stores": {
+      "gmg": { "query": "Cat Quest" },
+      "fanatical": { "query": "Cat Quest" },
+      "gog": { "query": "Cat Quest" },
+      "humble": { "query": "Cat Quest" },
+      "steam": { "query": "Cat Quest" },
+      "epic": { "query": "Cat Quest" },
+      "amazon-switch": { "query": "Nintendo Switch Cat Quest" }
+    }
+  },
+  "stardew-valley": {
+    "name": "Stardew Valley",
+    "stores": {
+      "steam": { "query": "Stardew Valley" },
+      "gmg": { "query": "Stardew Valley" },
+      "fanatical": { "query": "Stardew Valley" },
+      "gog": { "query": "Stardew Valley" },
+      "humble": { "query": "Stardew Valley" },
+      "ms": { "query": "Stardew Valley" },
+      "amazon-switch": { "query": "Nintendo Switch Stardew Valley" }
+    }
+  },
+  "mahjong": {
+    "name": "Mahjong",
+    "stores": {
+      "steam": { "query": "Mahjong" },
+      "gog": { "query": "Mahjong" },
+      "humble": { "query": "Mahjong" }
+    }
+  },
+  "sudoku": {
+    "name": "Sudoku",
+    "stores": {
+      "steam": { "query": "Sudoku" },
+      "gog": { "query": "Sudoku" },
+      "humble": { "query": "Sudoku" }
+    }
+  },
+  "solitaire": {
+    "name": "Solitaire",
+    "stores": {
+      "ms": { "query": "Solitaire Collection" },
+      "steam": { "query": "Solitaire" },
+      "gog": { "query": "Solitaire" },
+      "humble": { "query": "Solitaire" }
+    }
+  },
+  "backgammon": {
+    "name": "Backgammon",
+    "stores": {
+      "steam": { "query": "Backgammon" },
+      "gog": { "query": "Backgammon" },
+      "humble": { "query": "Backgammon" }
+    }
+  },
+  "chess": {
+    "name": "Chess",
+    "stores": {
+      "steam": { "query": "Chess" },
+      "gog": { "query": "Chess" },
+      "humble": { "query": "Chess" },
+      "ms": { "query": "Chess" }
+    }
+  },
+  "2048": {
+    "name": "2048",
+    "stores": {
+      "steam": { "query": "2048" },
+      "gog": { "query": "2048" },
+      "humble": { "query": "2048" }
+    }
+},
+  "xbox-controller": {
+    "name": "Xbox Wireless Controller",
+    "stores": { "amazon": { "query": "Xbox Wireless Controller" } }
+  },
+  "ps5-dualsense": {
+    "name": "PlayStation 5 DualSense Wireless Controller",
+    "stores": { "amazon": { "query": "PS5 DualSense wireless Controller" } }
+  },
+  "8bitdo-pro2": {
+    "name": "8BitDo Pro 2",
+    "stores": { "amazon": { "query": "8BitDo Pro 2" } }
+  }
+}
+
+

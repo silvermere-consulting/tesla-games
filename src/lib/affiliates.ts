@@ -8,36 +8,66 @@ function bySlug(slug: string) {
   return entry;
 }
 
+type PartnerObject = Record<string, unknown>;
+type PartnerConfig = string | PartnerObject;
+
+function resolvePartner(store: string, preferredKeys: string[] = []): string {
+  const config: PartnerConfig | undefined = (stores as any).partners?.[store];
+  if (!config) return "XXXX";
+  if (typeof config === "string") return config.trim() || "XXXX";
+
+  const pick = (key: string) => {
+    const value = (config as PartnerObject)[key];
+    return typeof value === "string" && value.trim().length > 0 ? value.trim() : undefined;
+  };
+
+  for (const key of preferredKeys) {
+    const value = pick(key);
+    if (value) return value;
+  }
+
+  for (const key of ["id", "partner", "creatorId"]) {
+    const value = pick(key);
+    if (value) return value;
+  }
+
+  return "XXXX";
+}
+
 // Build a URL for each authorised store, preferring productId → else search query
 function buildStoreUrl(store: string, name: string, opt?: {productId?: string; query?: string}) {
-  const partner = (stores as any).partners[store] || "XXXX";
   const pid = opt?.productId?.trim();
   const q   = (opt?.query || name).trim();
 
   switch (store) {
     case "gmg":
+      const gmgId = resolvePartner(store, ["id"]);
       return pid
-        ? `https://www.greenmangaming.com/${pid}?tap_a=${partner}`
-        : `https://www.greenmangaming.com/search?query=${encodeURIComponent(q)}&tap_a=${partner}`;
+        ? `https://www.greenmangaming.com/${pid}?tap_a=${gmgId}`
+        : `https://www.greenmangaming.com/search?query=${encodeURIComponent(q)}&tap_a=${gmgId}`;
 
     case "fanatical":
+      const fanaticalId = resolvePartner(store, ["id"]);
       return pid
-        ? `https://www.fanatical.com/en/game/${pid}?ref=${partner}`
-        : `https://www.fanatical.com/en/search?ref=${partner}&query=${encodeURIComponent(q)}`;
+        ? `https://www.fanatical.com/en/game/${pid}?ref=${fanaticalId}`
+        : `https://www.fanatical.com/en/search?ref=${fanaticalId}&query=${encodeURIComponent(q)}`;
 
     case "gog":
+      const gogPartner = resolvePartner(store, ["partner"]);
       return pid
-        ? `https://www.gog.com/en/game/${pid}?pp=${partner}`
-        : `https://www.gog.com/en/games?pp=${partner}&query=${encodeURIComponent(q)}`;
+        ? `https://www.gog.com/en/game/${pid}?pp=${gogPartner}`
+        : `https://www.gog.com/en/games?pp=${gogPartner}&query=${encodeURIComponent(q)}`;
 
     case "humble":
+      const humblePartner = resolvePartner(store, ["partner"]);
       return pid
-        ? `https://www.humblebundle.com/store/${pid}?partner=${partner}`
-        : `https://www.humblebundle.com/store/search?partner=${partner}&search=${encodeURIComponent(q)}`;
+        ? `https://www.humblebundle.com/store/${pid}?partner=${humblePartner}`
+        : `https://www.humblebundle.com/store/search?partner=${humblePartner}&search=${encodeURIComponent(q)}`;
 
     case "epic":
+      const creatorId = resolvePartner(store, ["creatorId"]);
       // EGS uses Support-A-Creator; no reliable search deep link, so send to store with creator id.
-      return `https://store.epicgames.com/?epic_creator_id=${partner}`;
+      return `https://store.epicgames.com/?epic_creator_id=${creatorId}`;
 
     case "steam":
       return pid

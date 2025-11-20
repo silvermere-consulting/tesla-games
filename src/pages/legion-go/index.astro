@@ -8,11 +8,11 @@ export const prerender = true;
 const title = "Legion Go";
 const description = "Lenovo Legion Go tips: detachable controllers, big screens, and portable monitor ideas for hotel setups.";
 
-const allGuides = await getCollection("guides");
+const allGuides = (await getCollection("guides")).filter((entry) => !entry.data.exclude);
 const guideSlugs = new Set(["arcade-replacements", "local-multiplayer"]);
 const guides = allGuides.filter((g) => guideSlugs.has(g.slug));
 
-const games = await getCollection("games");
+const games = (await getCollection("games")).filter((entry) => !entry.data.exclude);
 const legionReady = games.filter((g) => g.data.platforms.pc.available).slice(4, 8);
 ---
 <SiteLayout title={`${title} hub`} description={description}>

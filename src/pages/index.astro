@@ -5,7 +5,8 @@ import "../styles/global.css";
 
 export const prerender = true;
 
-const gameEntries = await getCollection("games");
+const gameEntriesRaw = await getCollection("games");
+const gameEntries = gameEntriesRaw.filter((entry) => !entry.data.exclude);
 const normalize = (t) => String(t ?? "").toLowerCase().trim().replace(/[-\s]+/g, "_");
 const LOW_SLUGS = new Set(["2048", "sudoku", "solitaire", "mahjong", "chess", "backgammon"]);
 const isLow = (g) => {
