@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import SiteLayout from "../../layouts/SiteLayout.astro";
 import "../../styles/global.css";
 
 export const prerender = true;
@@ -10,19 +11,15 @@ const filtered = games.filter(g =>
   g.data.platforms.pc.available &&
   (g.data.platforms.pc.perks.some(p => /cloud/i.test(p)))
 );
+
+const title = "Local co-op + cloud saves";
+const description = "Tesla Arcade favourites that support local multiplayer plus PC cloud save backups when you move off the road.";
 ---
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Local co-op + PC cloud saves</title>
-    <meta name="description" content="Tesla Arcade titles with local co-op and PC cloud saves at home." />
-  </head>
-  <body class="mx-auto max-w-3xl px-6 py-12">
-    <a class="underline text-sm" href="/">← Back home</a>
-    <h1 class="text-3xl font-bold mb-4">Local co-op + PC cloud saves</h1>
-    <ul class="list-disc ml-6">
-      {filtered.map(g => <li><a class="underline" href={`/games/${g.slug}`}>{g.data.title}</a></li>)}
-    </ul>
-  </body>
-</html>
+<SiteLayout title={title} description={description}>
+  <a class="text-sm text-[var(--brand-blue)] font-semibold" href="/">← Back home</a>
+  <h1 class="text-3xl font-bold mt-2 mb-3 text-[var(--brand-slate)]">{title}</h1>
+  <p class="text-slate-600 mb-4">{description}</p>
+  <ul class="list-disc ml-6 space-y-2">
+    {filtered.map(g => <li><a class="underline font-semibold" href={`/games/${g.slug}`}>{g.data.title}</a></li>)}
+  </ul>
+</SiteLayout>

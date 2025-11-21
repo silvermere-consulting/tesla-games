@@ -1,7 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import "../../styles/global.css";
-import HeadExtras from "../../components/HeadExtras.astro";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import GuideFeedback from "../../components/GuideFeedback.astro";
 
 export const prerender = true;
 
@@ -13,58 +14,46 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
+const pagePath = Astro.url?.pathname ?? `/guides/${entry.slug}`;
 const { Content } = await entry.render();
 const title = entry.data.seoTitle ?? entry.data.title;
 const description = entry.data.seoDescription ?? entry.data.short ?? `Guide: ${entry.data.title}`;
+const ogImage = entry?.data?.coverImage ?? "/favicon.svg";
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <HeadExtras />
-    <meta charset="utf-8" />
-    <title>{title} — Guides</title>
-    <meta name="description" content={description} />
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={`https://tesla-games.netlify.app${Astro.url.pathname}`} />
-    {entry?.data?.coverImage && <meta property="og:image" content={entry.data.coverImage} />}
-    <meta name="twitter:card" content="summary_large_image" />
-  </head>
-  <body class="mx-auto max-w-3xl px-6 py-12">
-    <a class="underline text-sm" href="/guides">← All guides</a>
-    <article class="prose prose-slate max-w-none">
-      <header class="mb-6">
-        <h1 class="!mb-2">{entry.data.title}</h1>
-        {entry.data.short && <p class="text-slate-600 !mt-0">{entry.data.short}</p>}
-        {entry.data.coverImage && <img src={entry.data.coverImage} alt="" class="rounded-xl my-4" loading="lazy" />}
-        {entry.data.updated && <p class="text-xs text-slate-500">Updated: {entry.data.updated}</p>}
-      </header>
-      <Content />
-      {entry.data.ctas.length > 0 && (
-        <aside class="mt-8 p-4 border rounded-xl">
-          <h2 class="text-lg font-semibold mb-2">Helpful links</h2>
-    <ul class="list-disc ml-6">
-      {entry.data.ctas.map((c, idx) => (
-        <li>
-          <a
-            class="underline"
-            href={c.url}
-            rel={c.rel ?? "noopener"}
-            target="_blank"
-            data-umami-event="Guide CTA"
-            data-umami-event-guide={entry.slug}
-            data-umami-event-title={entry.data.title}
-            data-umami-event-label={c.label}
-            data-umami-event-index={String(idx)}
-          >
-            {c.label}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </aside>
-)}
-    </article>
-  </body>
-</html>
+<SiteLayout title={title} description={description} ogImage={ogImage} ogType="article" mainClass="max-w-3xl px-6 py-10">
+  <a class="text-sm text-[var(--brand-blue)] font-semibold" href="/guides">← All guides</a>
+  <article class="prose prose-slate max-w-none">
+    <header class="mb-6">
+      <h1 class="!mb-2">{entry.data.title}</h1>
+      {entry.data.short && <p class="text-slate-600 !mt-0">{entry.data.short}</p>}
+      {entry.data.coverImage && <img src={entry.data.coverImage} alt="" class="rounded-xl my-4" loading="lazy" />}
+      {entry.data.updated && <p class="text-xs text-slate-500">Updated: {entry.data.updated}</p>}
+    </header>
+    <Content />
+    {entry.data.ctas.length > 0 && (
+      <aside class="mt-8 p-4 border rounded-xl bg-white">
+        <h2 class="text-lg font-semibold mb-2">Helpful links</h2>
+        <ul class="list-disc ml-6">
+          {entry.data.ctas.map((c, idx) => (
+            <li>
+              <a
+                class="underline"
+                href={c.url}
+                rel={c.rel ?? "noopener"}
+                target="_blank"
+                data-umami-event="Guide CTA"
+                data-umami-event-guide={entry.slug}
+                data-umami-event-title={entry.data.title}
+                data-umami-event-label={c.label}
+                data-umami-event-index={String(idx)}
+              >
+                {c.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    )}
+  </article>
+  <GuideFeedback pagePath={pagePath} />
+</SiteLayout>

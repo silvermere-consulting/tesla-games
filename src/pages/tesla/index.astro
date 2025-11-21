@@ -1,0 +1,76 @@
+---
+import { getCollection } from "astro:content";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import "../../styles/global.css";
+
+export const prerender = true;
+
+const title = "Tesla owners";
+const description = "Keep Tesla Arcade titles alive after you sell your car. Transfer progress, rebuild libraries, and find the best portable replacements.";
+
+const allGuides = (await getCollection("guides")).filter((entry) => !entry.data.exclude);
+const guideSlugs = new Set(["budget-upgrade", "arcade-replacements", "cross-saves", "controllers", "local-multiplayer"]);
+const guides = allGuides.filter((g) => guideSlugs.has(g.slug));
+
+const games = (await getCollection("games")).filter((entry) => !entry.data.exclude);
+const teslaGames = games.filter((g) => g.data.tesla?.available).slice(0, 6);
+---
+<SiteLayout title={`${title} hub`} description={description}>
+  <header class="mb-8">
+    <a class="text-sm text-[var(--brand-blue)] font-semibold" href="/">← Back home</a>
+    <p class="text-xs uppercase tracking-widest text-slate-500">Platform hub</p>
+    <h1 class="text-3xl font-bold mt-2 mb-2 text-[var(--brand-slate)]">Tesla owners: what happens after Arcade</h1>
+    <p class="text-slate-600 max-w-3xl">{description}</p>
+  </header>
+
+  <section class="grid gap-6 lg:grid-cols-2">
+    <div class="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+      <h2 class="text-2xl font-semibold text-[var(--brand-slate)]">Quick wins</h2>
+      <ul class="mt-4 space-y-3 text-slate-600">
+        <li>📦 Rebuy essentials on Switch or Steam Deck to keep saves portable.</li>
+        <li>☁️ Use cloud-first versions (Steam, Game Pass, Switch Online) for backups.</li>
+        <li>🎮 Reuse your Tesla-compatible controllers on PC/console – no new hardware needed.</li>
+      </ul>
+    </div>
+    <div class="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+      <h2 class="text-2xl font-semibold text-[var(--brand-slate)]">Need help moving saves?</h2>
+      <p class="text-slate-600 mt-2">Most Tesla titles keep progress in the car. Our guides outline when you can sign into existing accounts (Cuphead, Stardew, etc.) versus when a restart is unavoidable.</p>
+      <a href="/guides/cross-saves" class="mt-4 inline-flex items-center gap-2 font-semibold text-[var(--brand-blue)]">
+        Read the cross-save guide →
+      </a>
+    </div>
+  </section>
+
+  <section class="mt-12">
+    <h2 class="text-2xl font-semibold text-[var(--brand-slate)] mb-4">Guides for Tesla transitions</h2>
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {guides.map((g) => (
+        <li class="border border-slate-100 rounded-2xl bg-white shadow-sm hover:shadow-md transition">
+          <a href={`/guides/${g.slug}`} class="block p-4">
+            <p class="text-xs uppercase tracking-widest text-slate-500">Guide</p>
+            <h3 class="text-lg font-semibold text-[var(--brand-slate)] mt-2">{g.data.title}</h3>
+            {g.data.short && <p class="text-sm text-slate-600 mt-1 line-clamp-3">{g.data.short}</p>}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="mt-12">
+    <div class="flex items-baseline justify-between mb-4">
+      <h2 class="text-2xl font-semibold text-[var(--brand-slate)]">Popular Tesla Arcade titles</h2>
+      <a href="/games" class="text-sm font-semibold text-[var(--brand-blue)]">Browse full list</a>
+    </div>
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {teslaGames.map((g) => (
+        <li class="border border-slate-100 rounded-2xl bg-white shadow-sm hover:shadow-md transition">
+          <a href={`/games/${g.slug}`} class="block p-4">
+            <h3 class="font-semibold text-[var(--brand-slate)]">{g.data.title}</h3>
+            <p class="text-xs text-emerald-700 mt-1">Available in Tesla Arcade</p>
+            {g.data.short && <p class="text-sm text-slate-600 mt-2 line-clamp-3">{g.data.short}</p>}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</SiteLayout>

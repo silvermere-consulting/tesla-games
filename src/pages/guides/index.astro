@@ -1,17 +1,14 @@
 ---
 import { getCollection } from "astro:content";
+import SiteLayout from "../../layouts/SiteLayout.astro";
 import "../../styles/global.css";
-import HeadExtras from "../../components/HeadExtras.astro";
 
 export const prerender = true;
 
 const title = "Guides";
-const description = "How to recreate and upgrade your Tesla Arcade setup at home: devices, controllers, cross-saves, and more.";
+const description = "Portable gaming playbooks: Tesla Arcade replacements, handheld accessories, cross-save tips, and travel setups.";
 
-// Load guides
 const all = await getCollection("guides");
-
-// Sort: featured first, then newest by `updated`, then A–Z
 const guides = all
   .filter((g) => !g.data.exclude)
   .sort((a, b) => {
@@ -27,81 +24,63 @@ const guides = all
     return a.data.title.localeCompare(b.data.title);
   });
 
-// Choose an OG image: first guide with a cover, else fallback
 const ogImage = guides.find((g) => Boolean(g.data.coverImage))?.data.coverImage ?? "/favicon.svg";
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <HeadExtras />
-    <title>{title} — Tesla Games</title>
-    <meta name="description" content={description} />
-    <link rel="icon" href="/favicon.svg" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={`https://tesla-games.netlify.app${Astro.url.pathname}`} />
-    {ogImage && <meta property="og:image" content={ogImage} />}
-    <meta name="twitter:card" content="summary_large_image" />
-  </head>
-  <body class="min-h-screen">
-    <main class="mx-auto max-w-6xl px-6 py-12">
-      <header class="mb-8">
-        <h1 class="text-3xl font-bold">Guides</h1>
-        <p class="text-slate-600 mt-2">{description}</p>
-      </header>
+<SiteLayout title={title} description={description} ogImage={ogImage}>
+  <header class="mb-8">
+    <a class="text-sm text-[var(--brand-blue)] font-semibold" href="/">← Back home</a>
+    <h1 class="text-3xl font-bold mt-2 mb-2 text-[var(--brand-slate)]">Guides</h1>
+    <p class="text-slate-600">{description}</p>
+  </header>
 
-      {guides.length === 0 ? (
-        <p class="text-slate-500">No guides yet. Add files to <code>src/content/guides/</code>.</p>
-      ) : (
-        <ul class="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {guides.map((g) => (
-            <li class="group border rounded-xl overflow-hidden hover:shadow-sm transition">
-              <a
-                href={`/guides/${g.slug}`}
-                class="block"
-                data-umami-event="Guide Card Click"
-                data-umami-event-source="guides-index"
-                data-umami-event-guide={g.slug}
-                data-umami-event-title={g.data.title}
-              >
-                {g.data.coverImage ? (
-                  <img
-                    src={g.data.coverImage}
-                    alt=""
-                    class="w-full aspect-[16/9] object-cover"
-                    loading="lazy"
-                    width="640"
-                    height="360"
-                  />
-                ) : (
-                  <div class="w-full aspect-[16/9] bg-slate-100 grid place-items-center text-slate-400 text-sm">
-                    No image
-                  </div>
-                )}
+  {guides.length === 0 ? (
+    <p class="text-slate-500">No guides yet. Add files to <code>src/content/guides/</code>.</p>
+  ) : (
+    <ul class="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      {guides.map((g) => (
+        <li class="group border border-slate-100 rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-lg transition">
+          <a
+            href={`/guides/${g.slug}`}
+            class="block"
+            data-umami-event="Guide Card Click"
+            data-umami-event-source="guides-index"
+            data-umami-event-guide={g.slug}
+            data-umami-event-title={g.data.title}
+          >
+            {g.data.coverImage ? (
+              <img
+                src={g.data.coverImage}
+                alt=""
+                class="w-full aspect-[16/9] object-cover"
+                loading="lazy"
+                width="640"
+                height="360"
+              />
+            ) : (
+              <div class="w-full aspect-[16/9] bg-slate-100 grid place-items-center text-slate-400 text-sm">
+                No image
+              </div>
+            )}
 
-                <div class="p-3">
-                  <h2 class="font-semibold text-lg group-hover:underline">{g.data.title}</h2>
-                  {g.data.short && (
-                    <p class="text-sm text-slate-600 mt-1 line-clamp-2">{g.data.short}</p>
-                  )}
+            <div class="p-4">
+              <h2 class="font-semibold text-lg group-hover:underline text-[var(--brand-slate)]">{g.data.title}</h2>
+              {g.data.short && (
+                <p class="text-sm text-slate-600 mt-1 line-clamp-2">{g.data.short}</p>
+              )}
 
-                  <div class="mt-2 flex flex-wrap gap-2">
-                    {(g.data.tags ?? []).map((t) => (
-                      <span class="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded">{t}</span>
-                    ))}
-                  </div>
+              <div class="mt-2 flex flex-wrap gap-2">
+                {(g.data.tags ?? []).map((t) => (
+                  <span class="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded">{t}</span>
+                ))}
+              </div>
 
-                  {g.data.updated && (
-                    <p class="text-xs text-slate-500 mt-2">Updated: {g.data.updated}</p>
-                  )}
-                </div>
-              </a>
-            </li>
-          ))}
-        </ul>
-      )}
-    </main>
-  </body>
-</html>
+              {g.data.updated && (
+                <p class="text-xs text-slate-500 mt-2">Updated: {g.data.updated}</p>
+              )}
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )}
+</SiteLayout>

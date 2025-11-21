@@ -1,47 +1,29 @@
 ---
 import { getCollection } from "astro:content";
+import SiteLayout from "../layouts/SiteLayout.astro";
 import "../styles/global.css";
-import HeadExtras from "../components/HeadExtras.astro";
 
 export const prerender = true;
 
 const gameEntriesRaw = await getCollection("games");
 const gameEntries = gameEntriesRaw.filter((entry) => !entry.data.exclude);
-
 const normalize = (t) => String(t ?? "").toLowerCase().trim().replace(/[-\s]+/g, "_");
-
-
-
+const LOW_SLUGS = new Set(["2048", "sudoku", "solitaire", "mahjong", "chess", "backgammon"]);
 const isLow = (g) => {
   const tagArr = (g?.data?.tags ?? []).map(normalize);
-  return tagArr.includes("low_priority") || tagArr.includes("low-priority");
+  return tagArr.includes("low_priority") || tagArr.includes("low-priority") || LOW_SLUGS.has(g.slug);
 };
-
 const gamesSorted = [...gameEntries].sort(
   (a, b) => (isLow(a) ? 1 : 0) - (isLow(b) ? 1 : 0)
-         || a.data.title.localeCompare(b.data.title)
+         || a.data.title.localeCompare(b.data.title),
 );
 
+const featuredGames = gamesSorted.slice(0, 8);
 
-
-
-
-// optional: pick an OG image from the first non-low-priority game
-//const ogImage = gamesSorted.find((g) => rank(g) === 0)?.data?.coverImage ?? "/favicon.svg";
-
-
-/** (Optional) DEBUG: check order in server logs */
-//console.log("Games order AFTER SORT:", gamesSorted.map(g => `${isLow(g) ? "LOW " : "NORM"} ${g.data.title}`));
-
-
-// Sort A→Z by title
-// const games = entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
-
-// NEW: load guides
 const allGuides = await getCollection("guides");
 const ogImage = gamesSorted[0]?.data.coverImage ?? "/favicon.svg";
 const guides = allGuides
-  .filter(g => !g.data.exclude)
+  .filter((g) => !g.data.exclude)
   .sort((a, b) => {
     const aFeat = a.data.tags?.includes("featured");
     const bFeat = b.data.tags?.includes("featured");
@@ -52,103 +34,230 @@ const guides = allGuides
     if (aDate !== bDate) return bDate.localeCompare(aDate);
     return a.data.title.localeCompare(b.data.title);
   })
-  .slice(0, 3); // show top 3 on the homepage
+  .slice(0, 3);
 
-const title = "Recreate your Tesla Arcade at Home";
-const description = "Pick your game to see Tesla-specific notes, home-platform differences, cross-saves, and where to play.";
+const description = "Your portable gaming companion — Tesla Arcade replacements, Steam Deck vs Switch advice, and travel-ready setup guides.";
+
+const platformHubs = [
+  {
+    title: "Tesla owners",
+    href: "/tesla",
+    blurb: "Keep Tesla Arcade favourites alive after you sell the car.",
+    accent: "from-blue-500 to-teal-400",
+  },
+  {
+    title: "Steam Deck",
+    href: "/steam-deck",
+    blurb: "Turn Valve's handheld into a Tesla replacement + travel rig.",
+    accent: "from-sky-500 to-blue-600",
+  },
+  {
+    title: "Nintendo Switch",
+    href: "/switch",
+    blurb: "Family-friendly travel gaming plus Tesla cross-buy tips.",
+    accent: "from-amber-400 to-yellow-500",
+  },
+  {
+    title: "ROG Ally",
+    href: "/rog-ally",
+    blurb: "Windows handheld tweaks, docks, and car-friendly chargers.",
+    accent: "from-rose-400 to-pink-500",
+  },
+  {
+    title: "Legion Go",
+    href: "/legion-go",
+    blurb: "Modular controllers + portable screens for road trips.",
+    accent: "from-purple-400 to-indigo-500",
+  },
+  {
+    title: "Travel setups",
+    href: "/travel-setups",
+    blurb: "Portable monitors, controllers, Wi-Fi hotspots, and cases.",
+    accent: "from-teal-400 to-emerald-500",
+  },
+];
+
+const travelIdeas = [
+  "Best controllers for long-haul flights",
+  "Cloud gaming kits for hotel Wi-Fi",
+  "Rear-seat mounts for handhelds and tablets",
+  "Power banks that keep Decks + Switches running",
+];
 ---
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <HeadExtras />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <link rel="icon" href="/favicon.svg" />
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={`https://tesla-games.netlify.app${Astro.url.pathname}`} />
-    {ogImage && <meta property="og:image" content={ogImage} />}
-    <meta name="twitter:card" content="summary_large_image" />
-  </head>
-  <body class="min-h-screen">
-    <main class="mx-auto max-w-6xl px-6 py-12">
-      <header class="mb-8">
-        <h1 class="text-3xl font-bold">{title}</h1>
-        <p class="text-slate-600 mt-2">{description}</p>
-      </header>
-
-      <section class="mb-10">
-        <div class="flex items-baseline justify-between mb-3">
-          <h2 class="text-xl font-semibold">Available Games</h2>
-          <a class="underline text-sm" href="/games">View all →</a>
+<SiteLayout title="Games On The Move" description={description} ogImage={ogImage}>
+  <section class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] items-start">
+    <div class="space-y-6 bg-white rounded-3xl p-8 shadow-sm border border-slate-100">
+      <p class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-slate-500">
+        <span class="h-2 w-2 rounded-full bg-[var(--brand-blue)]"></span>
+        Portable gaming hub
+      </p>
+      <div class="space-y-4">
+        <h1 class="text-4xl font-bold text-[var(--brand-slate)]">Play anywhere. Rebuild every library.</h1>
+        <p class="text-lg text-slate-600">
+          Tesla Arcade, Steam Deck, Switch, cloud gaming, travel PCs – we cover what to buy, how to transfer saves, and the best ways to keep playing on the move.
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-4">
+        <a href="/guides" class="inline-flex items-center justify-center rounded-full bg-[var(--brand-blue)] px-6 py-3 text-white font-semibold shadow-lg shadow-blue-300/40">
+          Explore guides
+        </a>
+        <a href="/games" class="inline-flex items-center justify-center rounded-full border border-slate-300 px-6 py-3 font-semibold text-[var(--brand-slate)]">
+          Browse game library
+        </a>
+      </div>
+      <div class="grid gap-3 sm:grid-cols-2">
+        <div class="rounded-2xl border border-slate-100 p-4 bg-slate-50">
+          <p class="text-sm font-semibold text-slate-500">Platforms covered</p>
+          <p class="text-2xl font-bold text-[var(--brand-slate)]">Tesla · Deck · Switch · PC · Cloud</p>
         </div>
+        <div class="rounded-2xl border border-slate-100 p-4 bg-slate-50">
+          <p class="text-sm font-semibold text-slate-500">Guides in progress</p>
+          <p class="text-2xl font-bold text-[var(--brand-slate)]">Travel setups, accessories, cross-save</p>
+        </div>
+      </div>
+    </div>
 
-        <ul class="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {gamesSorted.map((g) => (
-            <li class="group border rounded-xl overflow-hidden hover:shadow-sm transition">
-              <a href={`/games/${g.slug}`} class="block" data-umami-event="Game Card Click" data-umami-event-source="home" data-umami-event-guide={g.slug} data-umami-event-title={g.data.title}>
-                {g.data.coverImage
-                  ? (
-                      <img
-                        src={g.data.coverImage}
-                        alt={`${g.data.title} cover`}
-                        class="w-full aspect-[16/9] object-cover"
-                        loading="lazy"
-                        width="640"
-                        height="360"
-                      />
-                    )
-                  : (
-                      <div class="w-full aspect-[16/9] bg-slate-100 grid place-items-center text-slate-400 text-sm">
-                        No image
-                      </div>
-                    )
-                }
-                <div class="p-3">
-                  <h3 class="font-semibold">{g.data.title}</h3>
-                  {g.data.tesla?.available
-                    ? <p class="text-xs text-emerald-700 mt-1">Tesla Arcade</p>
-                    : <p class="text-xs text-slate-500 mt-1">Home only</p>}
-                </div>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
+    <div class="bg-[var(--brand-slate)] text-white rounded-3xl p-8 shadow-md">
+      <p class="text-sm uppercase tracking-widest text-white/70">What we cover</p>
+      <ul class="mt-4 space-y-4 text-base">
+        <li class="flex gap-3">
+          <span class="h-2.5 w-2.5 mt-2 rounded-full bg-[var(--brand-yellow)]"></span>
+          <span>Where to keep playing every Tesla Arcade title.</span>
+        </li>
+        <li class="flex gap-3">
+          <span class="h-2.5 w-2.5 mt-2 rounded-full bg-[var(--brand-teal)]"></span>
+          <span>Best portable hardware, cases, docks, and controllers.</span>
+        </li>
+        <li class="flex gap-3">
+          <span class="h-2.5 w-2.5 mt-2 rounded-full bg-[var(--brand-blue)]"></span>
+          <span>Cloud and cross-save tips to move progress between devices.</span>
+        </li>
+        <li class="flex gap-3">
+          <span class="h-2.5 w-2.5 mt-2 rounded-full bg-white/60"></span>
+          <span>Road-trip entertainment setups for families and travellers.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
 
-<section class="mt-12">
-  <div class="flex items-baseline justify-between mb-3">
-    <h2 class="text-xl font-semibold">Guides</h2>
-    <a class="underline text-sm" href="/guides">View all</a>
-  </div>
+  <section class="mt-16">
+    <div class="flex items-baseline justify-between mb-4">
+      <h2 class="text-2xl font-semibold text-[var(--brand-slate)]">Platform hubs</h2>
+      <a href="/travel-setups" class="text-sm font-semibold text-[var(--brand-blue)]">See all setups →</a>
+    </div>
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {platformHubs.map((hub) => (
+        <a href={hub.href} class="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm hover:-translate-y-0.5 hover:shadow-md transition">
+          <div class={`h-1.5 w-16 rounded-full bg-gradient-to-r ${hub.accent} mb-4`}></div>
+          <p class="text-lg font-semibold text-[var(--brand-slate)]">{hub.title}</p>
+          <p class="text-sm text-slate-600 mt-1">{hub.blurb}</p>
+        </a>
+      ))}
+    </div>
+  </section>
 
-  {guides.length === 0 ? (
-    <p class="text-slate-500">No guides yet. Add files to <code>src/content/guides/</code>.</p>
-  ) : (
-    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {guides.map(g => (
-        <li class="border rounded-xl overflow-hidden hover:shadow-sm transition">
-          <a href={`/guides/${g.slug}`} class="block" data-umami-event="Guide Card Click" data-umami-event-source="home" data-umami-event-guide={g.slug} data-umami-event-title={g.data.title}>
-            {g.data.coverImage
-              ? <img src={g.data.coverImage} alt="" class="w-full aspect-[16/9] object-cover" loading="lazy" />
-              : <div class="w-full aspect-[16/9] bg-slate-100 grid place-items-center text-slate-400 text-sm">No image</div>}
-            <div class="p-3">
-              <h3 class="font-semibold">{g.data.title}</h3>
-              {g.data.short && <p class="text-sm text-slate-600 mt-1 line-clamp-2">{g.data.short}</p>}
-              {g.data.updated && <p class="text-xs text-slate-500 mt-2">Updated: {g.data.updated}</p>}
+  <section class="mt-16">
+    <div class="flex items-baseline justify-between mb-4">
+      <h2 class="text-2xl font-semibold text-[var(--brand-slate)]">Featured guides</h2>
+      <a class="text-sm font-semibold text-[var(--brand-blue)]" href="/guides">View all</a>
+    </div>
+    {guides.length === 0 ? (
+      <p class="text-slate-500">No guides yet. Add files to <code>src/content/guides/</code>.</p>
+    ) : (
+      <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {guides.map((g) => (
+          <li class="rounded-2xl border border-slate-100 bg-white overflow-hidden shadow-sm hover:shadow-lg transition">
+          <a href={`/guides/${g.slug}`} class="flex flex-col h-full" data-umami-event="Guide Card Click" data-umami-event-source="home" data-umami-event-guide={g.slug} data-umami-event-title={g.data.title}>
+              {g.data.coverImage ? (
+                <img src={g.data.coverImage} alt="" class="w-full aspect-[16/9] object-cover" loading="lazy" width="640" height="360" />
+              ) : (
+                <div class="w-full aspect-[16/9] bg-slate-100 grid place-items-center text-slate-400 text-sm">No image</div>
+              )}
+              <div class="p-4 space-y-2">
+                <h3 class="font-semibold text-lg text-[var(--brand-slate)]">{g.data.title}</h3>
+                {g.data.short && <p class="text-sm text-slate-600 line-clamp-2">{g.data.short}</p>}
+                {g.data.updated && <p class="text-xs text-slate-500">Updated: {g.data.updated}</p>}
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+
+  <section class="mt-16">
+    <div class="flex items-baseline justify-between mb-4">
+      <h2 class="text-2xl font-semibold text-[var(--brand-slate)]">Portable game library</h2>
+      <a class="text-sm font-semibold text-[var(--brand-blue)]" href="/games">View all games</a>
+    </div>
+    <ul class="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      {featuredGames.map((g) => (
+        <li class="group border border-slate-100 rounded-2xl overflow-hidden bg-white hover:shadow-md transition">
+          <a
+            href={`/games/${g.slug}`}
+            class="block"
+            data-umami-event="game-card-click"
+            data-umami-event-game={g.slug}
+            data-umami-event-source="home"
+          >
+            {g.data.coverImage ? (
+              <img
+                src={g.data.coverImage}
+                alt={`${g.data.title} cover`}
+                class="w-full aspect-[16/9] object-cover"
+                loading="lazy"
+                width="640"
+                height="360"
+              />
+            ) : (
+              <div class="w-full aspect-[16/9] bg-slate-100 grid place-items-center text-slate-400 text-sm">
+                No image
+              </div>
+            )}
+            <div class="p-4">
+              <h3 class="font-semibold text-[var(--brand-slate)]">{g.data.title}</h3>
+              {g.data.tesla?.available ? (
+                <p class="text-xs text-emerald-700 mt-1">Available in Tesla Arcade</p>
+              ) : (
+                <p class="text-xs text-slate-500 mt-1">Home/portable only</p>
+              )}
             </div>
           </a>
         </li>
       ))}
     </ul>
-  )}
-</section>
+  </section>
 
-      <footer class="text-xs text-slate-500 mt-10">
-        This site uses affiliate links to authorised stores. Tesla™ is a trademark of Tesla, Inc.
-      </footer>
-    </main>
-  </body>
-</html>
+  <section class="mt-16 grid gap-6 lg:grid-cols-2">
+    <div class="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+      <h2 class="text-2xl font-semibold text-[var(--brand-slate)]">Travel setup ideas</h2>
+      <p class="text-slate-600 mt-2">We're building evergreen guides that help you turn any car, hotel room, or Airbnb into a gaming station.</p>
+      <ul class="mt-4 space-y-3">
+        {travelIdeas.map((idea) => (
+          <li class="flex gap-3 text-sm text-slate-600">
+            <span class="h-2.5 w-2.5 mt-2 rounded-full bg-[var(--brand-teal)]"></span>
+            <span>{idea}</span>
+          </li>
+        ))}
+      </ul>
+      <a href="/travel-setups" class="mt-6 inline-flex items-center gap-2 font-semibold text-[var(--brand-blue)]">
+        Discover travel setups →
+      </a>
+    </div>
+    <div class="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+      <h2 class="text-2xl font-semibold text-[var(--brand-slate)]">Need a specific game?</h2>
+      <p class="text-slate-600 mt-2">Use the library to check platforms, cloud support, controller needs, and recommended hardware.</p>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <div class="rounded-2xl bg-slate-50 p-4">
+          <p class="text-sm text-slate-500">Cross-save insights</p>
+          <p class="text-lg font-semibold text-[var(--brand-slate)]">Tesla → Switch → PC</p>
+        </div>
+        <div class="rounded-2xl bg-slate-50 p-4">
+          <p class="text-sm text-slate-500">Affiliate partners</p>
+          <p class="text-lg font-semibold text-[var(--brand-slate)]">Amazon · GMG · Humble</p>
+        </div>
+      </div>
+      <p class="text-xs text-slate-500 mt-4">We only link authorised stores. Hardware picks focus on portable-friendly gear.</p>
+    </div>
+  </section>
+</SiteLayout>

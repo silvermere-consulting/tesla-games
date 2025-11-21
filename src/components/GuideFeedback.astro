@@ -1,0 +1,62 @@
+---
+interface Props {
+  pagePath: string;
+}
+
+const { pagePath } = Astro.props;
+---
+<section class="mt-10 border-t border-slate-200 pt-6 text-sm">
+  <h2 class="mb-2 text-base font-semibold text-[var(--brand-slate)]">
+    Was this guide helpful?
+  </h2>
+  <p class="mb-3 text-xs text-[var(--brand-slate)]/80">
+    Your feedback helps improve Games On The Move for other players and parents.
+  </p>
+
+  <form
+    name="guide-feedback"
+    method="POST"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    class="space-y-3"
+  >
+    <input type="hidden" name="form-name" value="guide-feedback" />
+    <input type="hidden" name="page" value={pagePath} />
+
+    <div class="flex flex-wrap gap-4 text-xs text-[var(--brand-slate)]">
+      <label class="inline-flex items-center gap-1">
+        <input type="radio" name="helpful" value="yes" required />
+        <span>Yes, it helped</span>
+      </label>
+      <label class="inline-flex items-center gap-1">
+        <input type="radio" name="helpful" value="no" />
+        <span>Not really</span>
+      </label>
+    </div>
+
+    <div class="space-y-1">
+      <label class="block text-[11px] text-[var(--brand-slate)]/80">
+        Anything missing or confusing? (optional)
+      </label>
+      <textarea
+        name="comments"
+        rows="3"
+        class="w-full rounded border border-slate-200 bg-white p-2 text-xs text-[var(--brand-slate)]"
+      ></textarea>
+    </div>
+
+    <p class="hidden">
+      <label>
+        Don’t fill this out if you're human:
+        <input name="bot-field" />
+      </label>
+    </p>
+
+    <button
+      type="submit"
+      class="mt-1 inline-flex items-center rounded-md border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-[var(--brand-slate)] hover:border-[var(--brand-blue)]/70"
+    >
+      Send feedback
+    </button>
+  </form>
+</section>

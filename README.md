@@ -1,10 +1,11 @@
-# Tesla Games Starter (Astro + Tailwind)
+# Games On The Move (Astro + Tailwind)
 
-A minimal site to help Tesla owners recreate their Tesla Arcade lineup on home platforms.
+A portable-gaming focused Astro starter that began life as a Tesla Arcade companion. It now powers **gamesonthemove.com** – a site that helps people rebuild their libraries across Tesla, Steam Deck, Switch, cloud, and travel setups.
+
 Includes:
-- Game index
+- Game index powered by Markdown/MDX content collections
 - Dynamic game pages with affiliate link helper
-- Tailwind + static build
+- Tailwind + static build ready for Netlify or Vercel
 
 ## macOS Quick Start
 
@@ -58,4 +59,4 @@ Add a new object to `src/data/games.json` with:
 
 ## Notes
 - This project avoids grey-market key sellers; only link authorised stores.
-- Tesla is a trademark of Tesla, Inc.
+- Tesla is a trademark of Tesla, Inc. Games On The Move is an independent guide.

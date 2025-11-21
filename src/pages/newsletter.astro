@@ -1,0 +1,58 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+---
+<SiteLayout title="Join the Games On The Move Newsletter" description="Get fresh portable gaming tips, Tesla Arcade replacements, and travel setup ideas straight to your inbox.">
+  <section class="max-w-xl mx-auto py-16 px-4">
+    <h1 class="text-4xl font-bold mb-4 text-[var(--brand-slate)]">Stay updated with portable gaming tips</h1>
+    <p class="text-lg text-[var(--brand-slate)]/80 mb-8">
+      Get updates on new guides, portable setups, Tesla Arcade replacements, and hardware picks. No spam—ever.
+    </p>
+
+    <form
+      name="newsletter-signup"
+      method="POST"
+      netlify
+      netlify-honeypot="bot-field"
+      class="bg-white shadow-md rounded-xl p-6 space-y-4 border border-slate-200"
+    >
+      <input type="hidden" name="form-name" value="newsletter-signup" />
+
+      <p class="hidden">
+        <label>
+          Don’t fill this out if you're human:
+          <input name="bot-field" />
+        </label>
+      </p>
+
+      <label class="block text-sm text-[var(--brand-slate)]">
+        <span class="font-medium">Your name (optional)</span>
+        <input
+          type="text"
+          name="name"
+          class="mt-1 block w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+        />
+      </label>
+
+      <label class="block text-sm text-[var(--brand-slate)]">
+        <span class="font-medium">Email address</span>
+        <input
+          type="email"
+          name="email"
+          required
+          class="mt-1 block w-full rounded-md border border-slate-200 px-3 py-2 text-sm"
+        />
+      </label>
+
+      <button
+        type="submit"
+        class="bg-[var(--brand-blue)] hover:bg-[var(--brand-blue)]/90 text-white px-5 py-2 rounded-md text-sm font-medium"
+      >
+        Subscribe
+      </button>
+    </form>
+
+    <p class="text-[11px] text-[var(--brand-slate)]/60 mt-4">
+      This form stores your email securely in Netlify. You can unsubscribe any time.
+    </p>
+  </section>
+</SiteLayout>

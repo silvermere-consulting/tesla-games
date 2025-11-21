@@ -1,65 +1,56 @@
 ---
 import { getCollection } from "astro:content";
+import SiteLayout from "../../layouts/SiteLayout.astro";
 import "../../styles/global.css";
 
 export const prerender = true;
 
-// Load all games from the content collection
 const entries = (await getCollection("games")).filter((entry) => !entry.data.exclude);
+const games = entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
 
-// Sort alphabetically
-const games = entries.sort((a, b) =>
-  a.data.title.localeCompare(b.data.title)
-);
-
-const title = "All Games";
-const description =
-  "Browse every Tesla Arcade title we cover, with guides to replicate them at home.";
+const title = "Game library";
+const description = "Every Tesla Arcade title we cover plus portable-friendly versions for PC, Deck, Switch, and cloud.";
 ---
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>{title} — Tesla Arcade at Home</title>
-    <meta name="description" content={description} />
-    <link rel="icon" href="/favicon.svg" />
-  </head>
-  <body class="mx-auto max-w-4xl px-6 py-12">
-    <a class="underline text-sm" href="/">← Back home</a>
+<SiteLayout title={title} description={description}>
+  <header class="mb-6">
+    <a class="text-sm text-[var(--brand-blue)] font-semibold" href="/">← Back home</a>
+    <h1 class="text-3xl font-bold mt-2 mb-2 text-[var(--brand-slate)]">{title}</h1>
+    <p class="text-slate-600">{description}</p>
+  </header>
 
-    <h1 class="text-3xl font-bold mt-2 mb-3">{title}</h1>
-    <p class="text-slate-600 mb-6">{description}</p>
-
-    <ul class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {games.map((g) => (
-        <li class="border rounded-xl p-4 hover:shadow-sm transition">
-          <a class="block" href={`/games/${g.slug}`}>
-            {g.data.coverImage
-              ? (
-                <img
-                  src={g.data.coverImage}
-                  alt={`${g.data.title} cover`}
-                  class="rounded-lg mb-3 aspect-[16/9] object-cover"
-                  loading="lazy"
-                />
-              )
-              : (
-                <div class="mb-3 bg-slate-100 aspect-[16/9] rounded-lg grid place-items-center text-slate-400 text-sm">
-                  No image
-                </div>
-              )}
-            <h2 class="text-lg font-semibold">{g.data.title}</h2>
-            {g.data.short && (
-              <p class="text-sm text-slate-600 mt-1 line-clamp-2">
-                {g.data.short}
-              </p>
-            )}
-            {g.data.tesla?.available
-              ? <p class="mt-2 text-xs text-emerald-700">Available in Tesla Arcade</p>
-              : <p class="mt-2 text-xs text-slate-500">Home only</p>}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </body>
-</html>
+  <ul class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+    {games.map((g) => (
+      <li class="border border-slate-100 rounded-2xl p-4 bg-white shadow-sm hover:shadow-md transition">
+        <a
+          class="block"
+          href={`/games/${g.slug}`}
+          data-umami-event="game-card-click"
+          data-umami-event-game={g.slug}
+          data-umami-event-source="games-index"
+        >
+          {g.data.coverImage ? (
+            <img
+              src={g.data.coverImage}
+              alt={`${g.data.title} cover`}
+              class="rounded-xl mb-3 aspect-[16/9] object-cover"
+              loading="lazy"
+            />
+          ) : (
+            <div class="mb-3 bg-slate-100 aspect-[16/9] rounded-xl grid place-items-center text-slate-400 text-sm">
+              No image
+            </div>
+          )}
+          <h2 class="text-lg font-semibold text-[var(--brand-slate)]">{g.data.title}</h2>
+          {g.data.short && (
+            <p class="text-sm text-slate-600 mt-1 line-clamp-2">
+              {g.data.short}
+            </p>
+          )}
+          {g.data.tesla?.available
+            ? <p class="mt-2 text-xs text-emerald-700">Available in Tesla Arcade</p>
+            : <p class="mt-2 text-xs text-slate-500">Home/portable only</p>}
+        </a>
+      </li>
+    ))}
+  </ul>
+</SiteLayout>

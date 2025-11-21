@@ -1,23 +1,65 @@
-import stores from "../data/stores.json";
-import gameLinks from "../data/game-links.json";
+import storesRaw from "../data/stores.json";
+import gameLinksRaw from "../data/game-links.json";
+import asins from "../data/asins.json";
 
-// Normalise a game key (slug) to the JSON map
-function bySlug(slug: string) {
-  const entry = (gameLinks as any)[slug];
-  if (!entry) throw new Error(`No game-links entry for slug: ${slug}`);
-  return entry;
-}
+type StoreId = string;
 
-type PartnerObject = Record<string, unknown>;
-type PartnerConfig = string | PartnerObject;
+type StoreLinkConfig = {
+  productId?: string;
+  query?: string;
+};
 
-function resolvePartner(store: string, preferredKeys: string[] = []): string {
-  const config: PartnerConfig | undefined = (stores as any).partners?.[store];
-  if (!config) return "XXXX";
-  if (typeof config === "string") return config.trim() || "XXXX";
+type GameLinkEntry = {
+  name?: string;
+  stores?: Record<StoreId, StoreLinkConfig | undefined>;
+};
+
+type StoresConfig = {
+  order?: StoreId[];
+  affiliateStores?: StoreId[];
+  amazonTag?: string;
+  partners?: Record<StoreId, string | Record<string, string>>;
+};
+
+const DEFAULT_ORDER: StoreId[] = ["gmg","fanatical","gog","humble","amazon-switch","steam","ms","epic"];
+const DEFAULT_AFFILIATE: StoreId[] = ["gmg","fanatical","gog","humble","amazon-switch"];
+const AMAZON_BASE = "https://www.amazon.co.uk";
+
+const storeSettings = storesRaw as StoresConfig;
+const gameLinks = gameLinksRaw as Record<string, GameLinkEntry>;
+const storeOrder = storeSettings.order?.length ? storeSettings.order : DEFAULT_ORDER;
+const affiliateStoreIds = new Set(storeSettings.affiliateStores?.length ? storeSettings.affiliateStores : DEFAULT_AFFILIATE);
+const partnerConfig = storeSettings.partners ?? {};
+const amazonTag = storeSettings.amazonTag || "gamelocnet-21";
+
+/**
+ * Map of store IDs to human readable labels.
+ */
+const STORE_LABELS: Record<StoreId, string> = {
+  gmg: "Green Man Gaming",
+  fanatical: "Fanatical",
+  gog: "GOG",
+  humble: "Humble Store",
+  epic: "Epic Games (creator code)",
+  steam: "Steam",
+  ms: "Microsoft Store",
+  "amazon-switch": "Amazon (Switch / eShop code)",
+};
+
+const amazonSearch = (term: string) =>
+  `${AMAZON_BASE}/s?k=${encodeURIComponent(term)}&tag=${encodeURIComponent(amazonTag)}`;
+const amazonProduct = (asin: string) =>
+  `${AMAZON_BASE}/dp/${asin}?tag=${encodeURIComponent(amazonTag)}`;
+
+const getGameEntry = (slug: string): GameLinkEntry | undefined => gameLinks[slug];
+
+const getPartnerCode = (storeId: StoreId, preferredKeys: string[] = []): string | undefined => {
+  const config = partnerConfig[storeId];
+  if (!config) return undefined;
+  if (typeof config === "string") return config.trim() || undefined;
 
   const pick = (key: string) => {
-    const value = (config as PartnerObject)[key];
+    const value = config[key];
     return typeof value === "string" && value.trim().length > 0 ? value.trim() : undefined;
   };
 
@@ -31,114 +73,118 @@ function resolvePartner(store: string, preferredKeys: string[] = []): string {
     if (value) return value;
   }
 
-  return "XXXX";
-}
+  return undefined;
+};
 
-// Build a URL for each authorised store, preferring productId → else search query
-function buildStoreUrl(store: string, name: string, opt?: {productId?: string; query?: string}) {
-  const pid = opt?.productId?.trim();
-  const q   = (opt?.query || name).trim();
+const buildStoreUrl = (storeId: StoreId, gameName: string, cfg: StoreLinkConfig = {}): string | null => {
+  const productId = cfg.productId?.trim();
+  const query = (cfg.query || gameName).trim();
 
-  switch (store) {
-    case "gmg":
-      const gmgId = resolvePartner(store, ["id"]);
-      return pid
-        ? `https://www.greenmangaming.com/${pid}?tap_a=${gmgId}`
-        : `https://www.greenmangaming.com/search?query=${encodeURIComponent(q)}&tap_a=${gmgId}`;
-
-    case "fanatical":
-      const fanaticalId = resolvePartner(store, ["id"]);
-      return pid
-        ? `https://www.fanatical.com/en/game/${pid}?ref=${fanaticalId}`
-        : `https://www.fanatical.com/en/search?ref=${fanaticalId}&query=${encodeURIComponent(q)}`;
-
-    case "gog":
-      const gogPartner = resolvePartner(store, ["partner"]);
-      return pid
-        ? `https://www.gog.com/en/game/${pid}?pp=${gogPartner}`
-        : `https://www.gog.com/en/games?pp=${gogPartner}&query=${encodeURIComponent(q)}`;
-
-    case "humble":
-      const humblePartner = resolvePartner(store, ["partner"]);
-      return pid
-        ? `https://www.humblebundle.com/store/${pid}?partner=${humblePartner}`
-        : `https://www.humblebundle.com/store/search?partner=${humblePartner}&search=${encodeURIComponent(q)}`;
-
-    case "epic":
-      const creatorId = resolvePartner(store, ["creatorId"]);
-      // EGS uses Support-A-Creator; no reliable search deep link, so send to store with creator id.
+  switch (storeId) {
+    case "gmg": {
+      const partner = getPartnerCode(storeId, ["id"]);
+      if (!partner) return null;
+      return productId
+        ? `https://www.greenmangaming.com/${productId}?tap_a=${partner}`
+        : `https://www.greenmangaming.com/search?query=${encodeURIComponent(query)}&tap_a=${partner}`;
+    }
+    case "fanatical": {
+      const partner = getPartnerCode(storeId, ["id"]);
+      if (!partner) return null;
+      return productId
+        ? `https://www.fanatical.com/en/game/${productId}?ref=${partner}`
+        : `https://www.fanatical.com/en/search?ref=${partner}&query=${encodeURIComponent(query)}`;
+    }
+    case "gog": {
+      const partner = getPartnerCode(storeId, ["partner"]);
+      if (!partner) return null;
+      return productId
+        ? `https://www.gog.com/en/game/${productId}?pp=${partner}`
+        : `https://www.gog.com/en/games?pp=${partner}&query=${encodeURIComponent(query)}`;
+    }
+    case "humble": {
+      const partner = getPartnerCode(storeId, ["partner"]);
+      if (!partner) return null;
+      return productId
+        ? `https://www.humblebundle.com/store/${productId}?partner=${partner}`
+        : `https://www.humblebundle.com/store/search?partner=${partner}&search=${encodeURIComponent(query)}`;
+    }
+    case "epic": {
+      const creatorId = getPartnerCode(storeId, ["creatorId"]);
+      if (!creatorId) return null;
       return `https://store.epicgames.com/?epic_creator_id=${creatorId}`;
-
+    }
     case "steam":
-      return pid
-        ? `https://store.steampowered.com/app/${pid}/`
-        : `https://store.steampowered.com/search/?term=${encodeURIComponent(q)}`;
-
+      return productId
+        ? `https://store.steampowered.com/app/${productId}/`
+        : `https://store.steampowered.com/search/?term=${encodeURIComponent(query)}`;
     case "ms":
-      return pid
-        ? `https://www.xbox.com/en-gb/games/store/${pid}`
-        : `https://www.xbox.com/en-gb/search?q=${encodeURIComponent(q)}`;
-
+      return productId
+        ? `https://www.xbox.com/en-gb/games/store/${productId}`
+        : `https://www.xbox.com/en-gb/search?q=${encodeURIComponent(query)}`;
     case "amazon-switch":
-     // use your Amazon tag from stores.json or hardcode gamelocnet-21
-      return `https://www.amazon.co.uk/s?k=${encodeURIComponent(q)}+nintendo+switch&tag=${encodeURIComponent((stores as any).amazonTag || "gamelocnet-21")}`;
-
+      return amazonSearch(`${query} nintendo switch`);
     default:
-      throw new Error(`Unknown store: ${store}`);
+      return null;
   }
-}
-// PUBLIC API
+};
 
 export type StoreLink = {
-  store: string;        // "gmg" | "fanatical" | "gog" | "humble" | "epic" | "steam" | "ms" | "amazon-switch" | ...
-  label: string;        // Human label
-  url: string;          // Final URL with affiliate params applied
-  isAffiliate: boolean; // True if this store pays you on click/purchase
+  store: StoreId;
+  label: string;
+  url: string;
+  isAffiliate: boolean;
 };
 
 type GameAffiliateOptions = {
-  /** only return stores that can pay commission (e.g. GMG/Fanatical/GOG/Humble/Amazon) */
+  /** Only return affiliates (GMG/Fanatical/GOG/Humble/Amazon) when true */
   onlyAffiliate?: boolean;
 };
 
+/**
+ * Build affiliate-aware store links for a given game slug.
+ * Falls back gracefully if the slug or store config is missing.
+ */
 export function gameAffiliateLinks(slug: string, opts: GameAffiliateOptions = {}): StoreLink[] {
-  const entry = bySlug(slug); // your existing helper reading src/data/game-links.json
-  const order: string[] = (stores as any).order || ["gmg","fanatical","gog","humble","amazon-switch","steam","ms","epic"];
-  const affiliateSet: Set<string> =
-    new Set(((stores as any).affiliateStores as string[]) || ["gmg","fanatical","gog","humble","amazon-switch"]);
+  const entry = getGameEntry(slug);
+  if (!entry?.stores) return [];
+  const name = entry.name || slug;
 
-  const name: string = entry.name;
+  const links: StoreLink[] = [];
+  for (const storeId of storeOrder) {
+    const cfg = entry.stores[storeId];
+    if (!cfg) continue;
+    const url = buildStoreUrl(storeId, name, cfg);
+    if (!url) continue;
 
-  // Build links in configured order, skip any store not present for this game
-  const links: StoreLink[] = order.flatMap((store) => {
-    const cfg = entry.stores?.[store];
-    if (!cfg) return [];
-    const url = buildStoreUrl(store, name, cfg); // your existing URL builder handles query/productId/partner params
-    const label = storeLabel(store);
-    const isAffiliate = affiliateSet.has(store);
-    return [{ store, label, url, isAffiliate }];
-  });
-
-  return opts.onlyAffiliate ? links.filter(l => l.isAffiliate) : links;
-}
-
-export function storeLabel(store: string) {
-  switch (store) {
-    case "gmg": return "Green Man Gaming";
-    case "fanatical": return "Fanatical";
-    case "gog": return "GOG";
-    case "humble": return "Humble Store";
-    case "epic": return "Epic Games (creator code)";
-    case "steam": return "Steam";
-    case "ms": return "Microsoft Store";
-    case "amazon-switch": return "Amazon (Switch / eShop code)";
-    default: return store.toUpperCase();
+    links.push({
+      store: storeId,
+      label: storeLabel(storeId),
+      url,
+      isAffiliate: affiliateStoreIds.has(storeId),
+    });
   }
+
+  return opts.onlyAffiliate ? links.filter((link) => link.isAffiliate) : links;
 }
 
-// Keep Amazon helper for hardware (ASIN map approach you already use)
-import asins from "../data/asins.json";
+/**
+ * Convert a store key into a human readable label.
+ */
+export function storeLabel(store: StoreId): string {
+  return STORE_LABELS[store] || store.toUpperCase();
+}
+
+/**
+ * Hardware affiliate helpers (currently only Amazon ASINs).
+ */
 export const affiliates = {
-  amazon: (key: keyof typeof asins) =>
-    `https://www.amazon.co.uk/dp/${asins[key]}?tag=gamelocnet-21`
+  amazon: (key: keyof typeof asins) => {
+    const asin = asins[key];
+    if (!asin) {
+      const fallbackQuery = key.replaceAll("_", " ");
+      return amazonSearch(fallbackQuery);
+    }
+    return amazonProduct(asin);
+  },
 };

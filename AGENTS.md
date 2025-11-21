@@ -1,20 +1,147 @@
- # Repository Guidelines
+# Games On The Move – Codex Agent Guidelines
 
-## Project Structure & Module Organization
-Tesla Games Starter is an Astro 5 + Tailwind site that renders Tesla Arcade-style listings. Route files live in `src/pages` (`index.astro`, `games/[slug].astro`, guides, compare). Shared UI/SEO helpers sit in `src/components`, while collection schemas are described in `src/content/config.ts` and the corresponding MDX/Markdown content resides under `src/content/games` and `src/content/guides`. Structured data powering listings is in `src/data/games.json`, and affiliate helpers live in `src/lib`. Site-wide styles live in `src/styles/global.css`, static assets go in `public/`, and the generated `dist/` directory should only be touched by the build.
+## Project Purpose & Context
 
-## Build, Test, and Development Commands
-Install dependencies once with `npm install`.
-- `npm run dev` – starts Astro on http://localhost:4321 with hot reload and validates content collections.
-- `npm run build` – runs the Astro static build, compiles Tailwind via the plugin, and surfaces schema/content errors.
-- `npm run preview` – serves the built `dist/` directory to spot regressions before deploying.
-- `npx astro check` – optional type+schema check to catch frontmatter drift without doing a full build.
+This repository powers **Games On The Move** (formerly “tesla-games”):  
+a content + affiliate site that helps people:
 
-## Coding Style & Naming Conventions
-Use TypeScript modules with ES imports, two-space indentation, and prefer `const` plus arrow functions for utilities (see `src/pages/index.astro`). Component filenames are `PascalCase.astro`, helper files `camelCase.ts`, routes `kebab-case.astro`, and slugs in `games.json` must match directory names under `src/content`. Tailwind utility classes should remain in markup; add new design tokens by extending `tailwind.config.cjs` or `src/styles/global.css`. Update affiliate IDs only inside `src/lib/affiliates.ts`.
+- Recreate their Tesla Arcade games on **PC, Steam Deck, Switch, consoles, or cloud**.
+- Discover which platforms each game is available on.
+- Buy games and hardware through affiliate partners (Amazon, GMG, etc.).
+- Use guides to choose the best portable / at-home setup for their budget and play style.
 
-## Testing Guidelines
-Automated tests are not yet wired up, so treat `npm run build` as the regression gate—it lints Astro, validates content collections, and fails on type/schema mismatches. After build success, run `npm run preview` and manually smoke-test the homepage sorting (feature guides first, low-priority set last), a few `/games/{slug}` pages, and any guides touched. When altering assets or layout, test at narrow and wide breakpoints because Tailwind classes assume responsive grids.
+The primary audiences are:
+- Ex-Tesla owners who miss the in-car games.
+- Portable gaming users (Steam Deck, Switch, ROG Ally, etc.).
+- Families and travellers wanting “games on the move”.
 
-## Commit & Pull Request Guidelines
-Recent history favors short, sentence-case summaries (“updated header for viewport…”). Follow that style, keep the imperative mood, and mention the surface touched (e.g., “adjust guide cards for featured tags”). Every PR should describe the intent, list test/build evidence, link any issue, and include screenshots or terminal output if you changed UI or data ordering. Verify `npm run build` locally before requesting review, avoid committing `dist/`, and call out modifications to `src/data/games.json` so reviewers can double-check content accuracy.
+### What matters most
+
+- Preserve the **“Games On The Move”** branding and tone: helpful, clear, semi-formal, not shouty.
+- Keep the **game library** and **guides** consistent and structured so we can scale SEO and affiliates.
+- Don’t break existing routes or content schemas unless explicitly asked.
+
+---
+
+## Project Structure
+
+Use this mental map when editing:
+
+- `src/pages/`
+  - Astro route files: `index.astro`, `games/index.astro`, `games/[slug].astro`, `guides/index.astro`, `compare/*`.
+  - This is where layout and page-level structure live.
+
+- `src/components/`
+  - Shared UI: cards, lists, headers, affiliate CTAs (`AffiliateLinks.astro`, etc.).
+
+- `src/content/`
+  - Content collections (MDX/Markdown):
+    - `games/` – per-game pages with frontmatter (title, tags, coverImage, platforms, notes).
+    - `guides/` – long-form guides (e.g. Switch 2, Steam Deck vs PC, budget upgrade paths).
+
+- `src/content/config.ts`
+  - Content collection schemas. Changing this affects how MDX frontmatter must look.
+
+- `src/data/`
+  - Structured data powering listings:
+    - `games.json` or similar – core game metadata.
+    - `game-links.json`, `asins.json` – per-platform / per-store affiliate link data.
+
+- `src/lib/`
+  - Helper logic (e.g. affiliate link resolution, tag helpers, sorting utilities).
+
+- `src/styles/global.css` and `tailwind.config.*`
+  - Global styles and Tailwind configuration.
+
+- `public/`
+  - Static assets (images, favicon, etc.). Use this for game cover images and logos.
+
+**Do not** edit build artefacts; they are generated and should be ignored:
+- `dist/`
+- `.astro/`
+- `node_modules/`
+- `node_modules/.vite/`
+- `node_modules/.astro/`
+
+---
+
+## Build, Test, and Dev Commands
+
+These are the only commands you should assume:
+
+- `npm install` – install dependencies once.
+- `npm run dev` – Astro dev server on `http://localhost:4321`.
+- `npm run build` – production build; validates content collections and types.
+- `npm run preview` – serve the built `dist/` for manual regression checks.
+- `npx astro check` – optional schema + type check without building.
+
+When you suggest changes that might break types or content schemas, **remind the user to run** `npm run build` or `npx astro check`.
+
+---
+
+## Coding & Content Style
+
+- Use **TypeScript** for helpers (`.ts`) and ES module imports.
+- Prefer `const` and small pure functions in `src/lib/`.
+- Astro components:
+  - Components: `PascalCase.astro`.
+  - Routes: `kebab-case.astro` in `src/pages/`.
+- Tailwind:
+  - Keep utility classes inline in markup.
+  - Only change config in `tailwind.config.*` when necessary.
+
+### Games & Guides Content
+
+- Game pages (`src/content/games/*.mdx`):
+  - Keep consistent frontmatter: title, slug, tags, coverImage, Tesla vs platform notes, feature list, cross-save info.
+  - Body content should follow a consistent structure: description, Tesla vs other platforms, features, “Play it on…” section with CTAs.
+
+- Guides (`src/content/guides/*.mdx`):
+  - Use headings (`##`) liberally for scannability.
+  - Focus on **practical, step-by-step advice** (e.g. “If you sold your Tesla and want these 5 games back…”).
+  - Where relevant, reference specific games by slug so they can be linked.
+
+When asked to generate new guides or game pages, prefer **structured sections** over walls of text.
+
+---
+
+## Affiliates & Data Rules
+
+- Affiliate logic should be centralised in `src/lib/affiliates.*` and data files in `src/data/`.
+- Do not hard-code affiliate URLs directly into page components unless the user explicitly asks.
+- When adding or changing affiliate data:
+  - Update the relevant JSON (`game-links.json`, `asins.json`, etc.).
+  - Ensure keys and structures remain consistent with current usage.
+- Any new affiliate integration should:
+  - Be easy to swap (e.g. via config or mapping).
+  - Avoid leaking secrets or tokens into client-side code.
+
+---
+
+## Git, Files, and Safety
+
+You are **not** responsible for running git commands; instead:
+
+- You may **suggest** commands like `git status`, `git diff`, `git checkout`, `git reset --hard`, or `git push`, but **do not assume they’ve been run**.
+- Never assume you can safely delete files outside `src/`, `src/content/`, `src/components/`, `src/lib/`, `src/data/`, and `public/` unless the user explicitly requests it.
+
+Treat these as **read-only / generated** unless the user is doing infrastructure work:
+- `dist/`
+- `.astro/`
+- `node_modules/`
+- `.netlify/` (if present)
+
+---
+
+## How to Respond to the User
+
+- Keep answers **code-focused but context-aware**:
+  - Respect the “Games On The Move” brand and audience.
+  - Aim for maintainable patterns, not just quick patches.
+- When the user gives you a high-level goal (e.g. “sort low_priority games last”, “improve guides layout”), do this:
+  1. Restate the goal briefly.
+  2. Identify the most relevant files.
+  3. Propose a concrete change (show diff or new code).
+  4. Remind them of any follow-up checks (e.g. `npm run build`).
+
+If the request is ambiguous, prefer to **propose a safe default** rather than inventing large new structures.
