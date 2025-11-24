@@ -21,8 +21,31 @@ type StoresConfig = {
   partners?: Record<StoreId, string | Record<string, string>>;
 };
 
-const DEFAULT_ORDER: StoreId[] = ["gmg","fanatical","gog","humble","amazon-switch","steam","ms","epic"];
-const DEFAULT_AFFILIATE: StoreId[] = ["gmg","fanatical","gog","humble","amazon-switch"];
+const DEFAULT_ORDER: StoreId[] = [
+  "gmg",
+  "fanatical",
+  "gamivo",
+  "gameseal",
+  "gog",
+  "humble",
+  "amazon-switch",
+  "argos",
+  "gamefly",
+  "steam",
+  "ms",
+  "epic",
+];
+const DEFAULT_AFFILIATE: StoreId[] = [
+  "gmg",
+  "fanatical",
+  "gamivo",
+  "gameseal",
+  "gog",
+  "humble",
+  "amazon-switch",
+  "argos",
+  "gamefly",
+];
 const AMAZON_BASE = "https://www.amazon.co.uk";
 
 const storeSettings = storesRaw as StoresConfig;
@@ -80,17 +103,21 @@ const getPartnerCode = (storeId: StoreId, preferredKeys: string[] = []): string 
   return undefined;
 };
 
-const buildStoreUrl = (storeId: StoreId, gameName: string, cfg: StoreLinkConfig = {}): string | null => {
+const buildStoreUrl = (
+  storeId: StoreId,
+  slug: string,
+  gameName: string,
+  cfg: StoreLinkConfig = {},
+): string | null => {
   const productId = cfg.productId?.trim();
   const query = (cfg.query || gameName).trim();
 
   switch (storeId) {
     case "gmg": {
-      const partner = getPartnerCode(storeId, ["id"]);
-      if (!partner) return null;
-      return productId
-        ? `https://www.greenmangaming.com/${productId}?tap_a=${partner}`
-        : `https://www.greenmangaming.com/search?query=${encodeURIComponent(query)}&tap_a=${partner}`;
+      // GMG: link to search page with game query plus our affiliate/UTM tracking.
+      // Search term comes from the per-game config (query) and is URL-encoded.
+      const encodedQuery = encodeURIComponent(query);
+      return `https://www.greenmangaming.com/search?query=${encodedQuery}&utm_source=Silvermere&utm_medium=affiliate&utm_campaign=impact&utm_content=1219987&irgwc=1&afsrc=1`;
     }
     case "fanatical": {
       const partner = getPartnerCode(storeId, ["id"]);
@@ -106,6 +133,12 @@ const buildStoreUrl = (storeId: StoreId, gameName: string, cfg: StoreLinkConfig 
         ? `https://www.gog.com/en/game/${productId}?pp=${partner}`
         : `https://www.gog.com/en/games?pp=${partner}&query=${encodeURIComponent(query)}`;
     }
+    case "gamivo":
+      // TODO: replace with affiliate deep link once tracking parameters are available.
+      return `https://www.gamivo.com/search/${encodeURIComponent(query)}`;
+    case "gameseal":
+      // TODO: replace with affiliate deep link once tracking parameters are available.
+      return `https://www.gameseal.com/search?type=product&q=${encodeURIComponent(query)}`;
     case "humble": {
       const partner = getPartnerCode(storeId, ["partner"]);
       if (!partner) return null;
@@ -164,7 +197,7 @@ export function gameAffiliateLinks(slug: string, opts: GameAffiliateOptions = {}
   for (const storeId of storeOrder) {
     const cfg = entry.stores[storeId];
     if (!cfg) continue;
-    const url = buildStoreUrl(storeId, name, cfg);
+    const url = buildStoreUrl(storeId, slug, name, cfg);
     if (!url) continue;
 
     links.push({
