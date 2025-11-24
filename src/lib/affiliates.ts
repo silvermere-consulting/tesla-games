@@ -38,12 +38,16 @@ const amazonTag = storeSettings.amazonTag || "gamelocnet-21";
 const STORE_LABELS: Record<StoreId, string> = {
   gmg: "Green Man Gaming",
   fanatical: "Fanatical",
+  gamivo: "Gamivo",
+  gameseal: "Gameseal",
   gog: "GOG",
   humble: "Humble Store",
   epic: "Epic Games (creator code)",
   steam: "Steam",
   ms: "Microsoft Store",
   "amazon-switch": "Amazon (Switch / eShop code)",
+  argos: "Argos",
+  gamefly: "GameFly",
 };
 
 const amazonSearch = (term: string) =>
@@ -124,6 +128,12 @@ const buildStoreUrl = (storeId: StoreId, gameName: string, cfg: StoreLinkConfig 
         : `https://www.xbox.com/en-gb/search?q=${encodeURIComponent(query)}`;
     case "amazon-switch":
       return amazonSearch(`${query} nintendo switch`);
+    case "argos":
+      // TODO: replace with full Awin deep-link once tracking parameters are available.
+      return `https://www.argos.co.uk/search/${encodeURIComponent(query)}/`;
+    case "gamefly":
+      // TODO: replace with full CJ deep-link once tracking parameters are available.
+      return `https://www.gamefly.com/search/${encodeURIComponent(query)}/`;
     default:
       return null;
   }
