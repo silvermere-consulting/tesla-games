@@ -5,8 +5,8 @@ import "../../styles/global.css";
 
 export const prerender = true;
 
-const title = "Guides";
-const description = "Portable gaming playbooks: Tesla Arcade replacements, handheld accessories, cross-save tips, and travel setups.";
+const title = "Portable Console Buying Guides";
+const description = "Clear, friendly guides for choosing the best portable gaming consoles and travel setups.";
 
 const all = await getCollection("guides");
 const guides = all
@@ -50,7 +50,7 @@ const ogImage = guides.find((g) => Boolean(g.data.coverImage))?.data.coverImage 
             {g.data.coverImage ? (
               <img
                 src={g.data.coverImage}
-                alt=""
+                alt={g.data.title}
                 class="w-full aspect-[16/9] object-cover"
                 loading="lazy"
                 width="640"

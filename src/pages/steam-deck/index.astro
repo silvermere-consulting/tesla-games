@@ -5,8 +5,8 @@ import "../../styles/global.css";
 
 export const prerender = true;
 
-const title = "Steam Deck";
-const description = "Use Valve's handheld or ROG-style PCs as the ultimate Tesla Arcade replacement with offline installs, mods, and docks.";
+const title = "Steam Deck — Portable Gaming Guide";
+const description = "Steam Deck setup ideas, guides and accessory recommendations.";
 
 const allGuides = (await getCollection("guides")).filter((entry) => !entry.data.exclude);
 const guideSlugs = new Set(["arcade-replacements", "budget-upgrade", "controllers"]);
@@ -15,7 +15,7 @@ const guides = allGuides.filter((g) => guideSlugs.has(g.slug));
 const games = (await getCollection("games")).filter((entry) => !entry.data.exclude);
 const portableFriendly = games.filter((g) => g.data.platforms.pc.available).slice(0, 6);
 ---
-<SiteLayout title={`${title} hub`} description={description}>
+<SiteLayout title={title} description={description}>
   <header class="mb-8">
     <a class="text-sm text-[var(--brand-blue)] font-semibold" href="/">← Back home</a>
     <p class="text-xs uppercase tracking-widest text-slate-500">Platform hub</p>
