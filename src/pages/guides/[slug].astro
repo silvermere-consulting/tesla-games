@@ -19,6 +19,16 @@ const { Content } = await entry.render();
 const title = entry.data.seoTitle ?? entry.data.title;
 const description = entry.data.seoDescription ?? entry.data.short ?? `Guide: ${entry.data.title}`;
 const ogImage = entry?.data?.coverImage ?? "/favicon.svg";
+const canonicalBase = "https://gamesonthemove.com";
+const canonicalUrl = `${canonicalBase}${pagePath}`;
+const articleLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: entry.data.title,
+  description: entry.data.description,
+  datePublished: entry.data.date,
+  url: canonicalUrl,
+};
 ---
 <SiteLayout title={title} description={description} ogImage={ogImage} ogType="article" mainClass="max-w-3xl px-6 py-10">
   <a class="text-sm text-[var(--brand-blue)] font-semibold" href="/guides">← All guides</a>
@@ -26,9 +36,12 @@ const ogImage = entry?.data?.coverImage ?? "/favicon.svg";
     <header class="mb-6">
       <h1 class="!mb-2">{entry.data.title}</h1>
       {entry.data.short && <p class="text-slate-600 !mt-0">{entry.data.short}</p>}
-      {entry.data.coverImage && <img src={entry.data.coverImage} alt="" class="rounded-xl my-4" loading="lazy" />}
+      {entry.data.coverImage && <img src={entry.data.coverImage} alt={entry.data.title} class="rounded-xl my-4" loading="lazy" />}
       {entry.data.updated && <p class="text-xs text-slate-500">Updated: {entry.data.updated}</p>}
     </header>
+    <script type="application/ld+json">
+      {JSON.stringify(articleLd)}
+    </script>
     <Content />
     {entry.data.ctas.length > 0 && (
       <aside class="mt-8 p-4 border rounded-xl bg-white">

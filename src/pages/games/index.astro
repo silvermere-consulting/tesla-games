@@ -8,8 +8,8 @@ export const prerender = true;
 const entries = (await getCollection("games")).filter((entry) => !entry.data.exclude);
 const games = entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
 
-const title = "Game library";
-const description = "Every Tesla Arcade title we cover plus portable-friendly versions for PC, Deck, Switch, and cloud.";
+const title = "How to Play Games Whilst On The Move";
+const description = "Explore game availability across Switch, Steam Deck, PC and mobile platforms.";
 ---
 <SiteLayout title={title} description={description}>
   <header class="mb-6">

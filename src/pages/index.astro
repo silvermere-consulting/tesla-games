@@ -36,7 +36,7 @@ const guides = allGuides
   })
   .slice(0, 3);
 
-const description = "Your portable gaming companion — Tesla Arcade replacements, Steam Deck vs Switch advice, and travel-ready setup guides.";
+const description = "Guides, breakdowns and setup ideas for playing games on the move — Switch, Steam Deck, PC and more.";
 
 const platformHubs = [
   {
@@ -84,7 +84,7 @@ const travelIdeas = [
   "Power banks that keep Decks + Switches running",
 ];
 ---
-<SiteLayout title="Games On The Move" description={description} ogImage={ogImage}>
+<SiteLayout title="Portable Gaming Guides — Games On The Move" description={description} ogImage={ogImage}>
   <section class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] items-start">
     <div class="space-y-6 bg-white rounded-3xl p-8 shadow-sm border border-slate-100">
       <p class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-slate-500">
@@ -169,7 +169,7 @@ const travelIdeas = [
           <li class="rounded-2xl border border-slate-100 bg-white overflow-hidden shadow-sm hover:shadow-lg transition">
           <a href={`/guides/${g.slug}`} class="flex flex-col h-full" data-umami-event="Guide Card Click" data-umami-event-source="home" data-umami-event-guide={g.slug} data-umami-event-title={g.data.title}>
               {g.data.coverImage ? (
-                <img src={g.data.coverImage} alt="" class="w-full aspect-[16/9] object-cover" loading="lazy" width="640" height="360" />
+                <img src={g.data.coverImage} alt={g.data.title} class="w-full aspect-[16/9] object-cover" loading="lazy" width="640" height="360" />
               ) : (
                 <div class="w-full aspect-[16/9] bg-slate-100 grid place-items-center text-slate-400 text-sm">No image</div>
               )}

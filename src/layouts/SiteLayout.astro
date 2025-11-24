@@ -14,6 +14,24 @@ const siteName = "Games On The Move";
 const pageTitle = title === siteName ? title : `${title} — ${siteName}`;
 const canonicalBase = "https://gamesonthemove.com";
 const canonicalUrl = `${canonicalBase}${Astro.url.pathname}`;
+const webSiteLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: siteName,
+  url: "https://gamesonthemove.com/",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: "https://gamesonthemove.com/search?q={search_term_string}",
+    "query-input": "required name=search_term_string",
+  },
+};
+const webPageLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: pageTitle,
+  url: canonicalUrl,
+  description,
+};
 const navLinks = [
   { href: "/guides", label: "Guides" },
   { href: "/games", label: "Games" },
@@ -39,6 +57,12 @@ const navLinks = [
     <meta property="og:url" content={canonicalUrl} />
     {ogImage && <meta property="og:image" content={ogImage} />}
     <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json">
+      {JSON.stringify(webSiteLd)}
+    </script>
+    <script type="application/ld+json">
+      {JSON.stringify(webPageLd)}
+    </script>
   </head>
   <body class="bg-[var(--brand-soft)] text-[var(--brand-slate)] antialiased">
     <a href="#content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-white text-[var(--brand-slate)] px-4 py-2 rounded">Skip to content</a>
