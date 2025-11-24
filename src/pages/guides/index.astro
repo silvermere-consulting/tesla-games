@@ -31,6 +31,13 @@ const ogImage = guides.find((g) => Boolean(g.data.coverImage))?.data.coverImage 
     <a class="text-sm text-[var(--brand-blue)] font-semibold" href="/">← Back home</a>
     <h1 class="text-3xl font-bold mt-2 mb-2 text-[var(--brand-slate)]">Guides</h1>
     <p class="text-slate-600">{description}</p>
+    <p class="text-slate-600 mt-3">
+      Looking for where to play on the move? Explore our guides below, or jump straight into the
+      <a href="/games" class="underline text-[var(--brand-blue)]">game library</a>,
+      <a href="/steam-deck" class="underline text-[var(--brand-blue)]">Steam Deck guide</a>,
+      <a href="/switch" class="underline text-[var(--brand-blue)]">Nintendo Switch guide</a>, or
+      <a href="/travel-setups" class="underline text-[var(--brand-blue)]">travel setups overview</a>.
+    </p>
   </header>
 
   {guides.length === 0 ? (
@@ -71,6 +78,9 @@ const ogImage = guides.find((g) => Boolean(g.data.coverImage))?.data.coverImage 
               <div class="mt-2 flex flex-wrap gap-2">
                 {(g.data.tags ?? []).map((t) => (
                   <span class="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded">{t}</span>
+                ))}
+                {(g.data.topics ?? []).map((t) => (
+                  <span class="text-xs bg-blue-50 text-[var(--brand-blue)] px-2 py-1 rounded border border-blue-100">{t}</span>
                 ))}
               </div>
 
