@@ -116,8 +116,9 @@ const buildStoreUrl = (
     case "gmg": {
       // GMG: link to search page with game query plus our affiliate/UTM tracking.
       // Search term comes from the per-game config (query) and is URL-encoded.
+      const subId = slug || encodeURIComponent(query || "game");
       const encodedQuery = encodeURIComponent(query);
-      return `https://www.greenmangaming.com/search?query=${encodedQuery}&utm_source=Silvermere&utm_medium=affiliate&utm_campaign=impact&utm_content=1219987&irgwc=1&afsrc=1`;
+      return `https://www.greenmangaming.com/search?query=${encodedQuery}&utm_source=Silvermere&utm_medium=affiliate&utm_campaign=impact&utm_content=1219987&irgwc=1&afsrc=1&subId1=${subId}`;
     }
     case "fanatical": {
       const partner = getPartnerCode(storeId, ["id"]);
