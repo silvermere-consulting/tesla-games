@@ -4,6 +4,7 @@
     "fanatical",
     "gamivo",
     "gameseal",
+    "gamesseal",
     "gog",
     "humble",
     "amazon-switch",
@@ -18,6 +19,7 @@
     "fanatical",
     "gamivo",
     "gameseal",
+    "gamesseal",
     "gog",
     "humble",
     "amazon-switch",
@@ -32,5 +34,13 @@
     "epic": { "creatorId": "YOUR_CREATOR_CODE" },
     "argos": { "program": "awin", "id": "YOUR_ARGOS_AWIN_ID" },
     "gamefly": { "program": "cj", "id": "YOUR_GAMEFLY_CJ_ID" }
+  },
+  "stores": {
+    "gamesseal": {
+      "label": "GameSeal",
+      "type": "cj",
+      "publisherId": "101594700",
+      "advertiserId": "75771703"
+    }
   }
 }
