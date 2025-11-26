@@ -19,6 +19,7 @@ type StoresConfig = {
   affiliateStores?: StoreId[];
   amazonTag?: string;
   partners?: Record<StoreId, string | Record<string, string>>;
+  stores?: Record<StoreId, { label?: string; type?: string; publisherId?: string; advertiserId?: string }>;
 };
 
 const DEFAULT_ORDER: StoreId[] = [
@@ -26,6 +27,7 @@ const DEFAULT_ORDER: StoreId[] = [
   "fanatical",
   "gamivo",
   "gameseal",
+  "gamesseal",
   "gog",
   "humble",
   "amazon-switch",
@@ -40,6 +42,7 @@ const DEFAULT_AFFILIATE: StoreId[] = [
   "fanatical",
   "gamivo",
   "gameseal",
+  "gamesseal",
   "gog",
   "humble",
   "amazon-switch",
@@ -53,6 +56,7 @@ const gameLinks = gameLinksRaw as Record<string, GameLinkEntry>;
 const storeOrder = storeSettings.order?.length ? storeSettings.order : DEFAULT_ORDER;
 const affiliateStoreIds = new Set(storeSettings.affiliateStores?.length ? storeSettings.affiliateStores : DEFAULT_AFFILIATE);
 const partnerConfig = storeSettings.partners ?? {};
+const storeConfig = storeSettings.stores ?? {};
 const amazonTag = storeSettings.amazonTag || "gamelocnet-21";
 
 /**
@@ -63,6 +67,7 @@ const STORE_LABELS: Record<StoreId, string> = {
   fanatical: "Fanatical",
   gamivo: "Gamivo",
   gameseal: "Gameseal",
+  gamesseal: "GameSeal",
   gog: "GOG",
   humble: "Humble Store",
   epic: "Epic Games (creator code)",
@@ -111,6 +116,16 @@ const buildStoreUrl = (
 ): string | null => {
   const productId = cfg.productId?.trim();
   const query = (cfg.query || gameName).trim();
+  const store = storeConfig[storeId];
+  const storeType = typeof store === "object" ? store.type : undefined;
+
+  if (storeType === "cj") {
+    const publisherId = store?.publisherId;
+    const advertiserId = store?.advertiserId;
+    if (!publisherId || !advertiserId) return null;
+    const encodedQuery = encodeURIComponent(query);
+    return `https://www.tkqlhce.com/click-${publisherId}-${advertiserId}?sid=${encodedQuery}`;
+  }
 
   switch (storeId) {
     case "gmg": {
