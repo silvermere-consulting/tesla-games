@@ -54,6 +54,11 @@ const guides = defineCollection({
     seoTitle: z.string().optional(),
     seoDescription: z.string().optional(),
     tags: z.array(z.string()).default([]),
+    topics: z.array(z.string()).optional(),
+    faqs: z.array(z.object({
+      question: z.string(),
+      answer: z.string(),
+    })).optional(),
     exclude: z.boolean().default(false),
     ctas: z.array(z.object({
       label: z.string(),

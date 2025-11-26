@@ -6,8 +6,21 @@ const { entry } = Astro.props as { entry: CollectionEntry<"games"> };
 const { Content } = await entry.render?.() ?? { Content: null };
 
 // Build store links from slug (digital stores)
-let links: {label: string; url: string}[] = [];
-try { links = (await gameAffiliateLinks(entry.slug)) || []; } catch { links = []; }
+let storeLinks: {label: string; url: string; store: string}[] = [];
+try {
+  const raw = (await gameAffiliateLinks(entry.slug)) || [];
+  const seen = new Set<string>();
+  storeLinks = raw
+    .filter((l) => l?.url)
+    .filter((l) => {
+      if (seen.has(l.url)) return false;
+      seen.add(l.url);
+      return true;
+    })
+    .map((l) => ({ label: l.label, url: l.url, store: l.store }));
+} catch {
+  storeLinks = [];
+}
 
 const P = entry.data.platforms;
 const yn = (v?: boolean) => (v ? "Yes" : "No");
@@ -40,57 +53,60 @@ const plat = [
   <section class="space-y-3">
     <h2 class="text-xl font-semibold">Platform comparison at a glance</h2>
 
-    <div class="grid md:grid-cols-2 gap-4">
-      <div class="p-4 border rounded-xl">
-        <h3 class="font-semibold mb-2">Tesla in-car version</h3>
-        <ul class="list-disc ml-6">
-          <li>{entry.data.tesla.available ? "Available in Tesla Arcade" : "Not available in Tesla Arcade"}</li>
-          {entry.data.tesla.scope && <li>{entry.data.tesla.scope}</li>}
-          <li>Controller required: {yn(entry.data.tesla.controllerRequired)}</li>
-          <li>Local co-op: {yn(entry.data.tesla.localCoop)}</li>
-          {entry.data.tesla.notes.map(n => <li>{n}</li>)}
-        </ul>
+    <div class="grid gap-4 md:grid-cols-2">
+      {entry.data.tesla && (
+        <div class="p-4 border rounded-xl bg-white">
+          <h3 class="font-semibold mb-2">Tesla in-car version</h3>
+          <ul class="list-disc ml-6">
+            <li>{entry.data.tesla.available ? "Available in Tesla Arcade" : "Not available in Tesla Arcade"}</li>
+            {entry.data.tesla.scope && <li>{entry.data.tesla.scope}</li>}
+            <li>Controller required: {yn(entry.data.tesla.controllerRequired)}</li>
+            <li>Local co-op: {yn(entry.data.tesla.localCoop)}</li>
+            {entry.data.tesla.notes.map((n) => <li>{n}</li>)}
+          </ul>
+        </div>
+      )}
+      <div class="overflow-x-auto p-0 md:p-0">
+        <table class="w-full text-sm border rounded-xl overflow-hidden bg-white">
+          <thead class="bg-slate-50 text-slate-700">
+            <tr><th class="text-left p-3">Platform</th><th class="text-left p-3">Available</th><th class="text-left p-3">Key perks / differences</th></tr>
+          </thead>
+          <tbody>
+            {plat.map((p) => (
+              <tr class="border-t">
+                <td class="p-3 font-medium">{p.label}</td>
+                <td class="p-3">{p.available ? "Yes" : "No"}</td>
+                <td class="p-3">{p.perks}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-      <div class="p-4 border rounded-xl">
-        <h3 class="font-semibold mb-2">Where to buy / play at home</h3>
-        {links.length
-          ? <ul class="list-disc ml-6">{links.map(l => (
-            <li>
-              <a
-                class="underline"
-                href={l.url}
-                target="_blank"
-                rel="noopener noreferrer sponsored"
-                data-umami-event="affiliate-click"
-                data-umami-event-game={entry.slug}
-                data-umami-event-store={l.store}
-              >
-                {l.label}
-              </a>
-            </li>
-          ))}</ul>
-          : <p class="text-slate-600">Store links coming soon.</p>
-        }
-      </div>
-    </div>
-
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm border rounded-xl overflow-hidden bg-white">
-        <thead class="bg-slate-50 text-slate-700">
-          <tr><th class="text-left p-3">Platform</th><th class="text-left p-3">Available</th><th class="text-left p-3">Key perks / differences</th></tr>
-        </thead>
-        <tbody>
-          {plat.map(p => (
-            <tr class="border-t">
-              <td class="p-3 font-medium">{p.label}</td>
-              <td class="p-3">{p.available ? "Yes" : "No"}</td>
-              <td class="p-3">{p.perks}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </div>
   </section>
+
+  {storeLinks.length > 0 && (
+    <section class="p-4 border rounded-xl bg-white">
+      <h2 class="text-xl font-semibold">Where to buy {entry.data.title}</h2>
+      <p class="text-slate-600">Buy a full version of {entry.data.title} on these platforms.</p>
+      <ul class="game-buy-links">
+        {storeLinks.map((l) => (
+          <li>
+            <a
+              href={l.url}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              data-umami-event="affiliate-click"
+              data-umami-event-game={entry.slug}
+              data-umami-event-store={l.store}
+            >
+              {l.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
 
   <!-- 3) CROSS-SAVES -->
   <section class="p-4 border rounded-xl">
