@@ -5,8 +5,8 @@ import "../../styles/global.css";
 
 export const prerender = true;
 
-const title = "Tesla owners";
-const description = "Keep Tesla Arcade titles alive after you sell your car. Transfer progress, rebuild libraries, and find the best portable replacements.";
+const title = "Gaming Outside Your Tesla";
+const description = "How to keep playing your favourite games after leaving the car.";
 
 const allGuides = (await getCollection("guides")).filter((entry) => !entry.data.exclude);
 const guideSlugs = new Set(["budget-upgrade", "arcade-replacements", "cross-saves", "controllers", "local-multiplayer"]);
@@ -15,7 +15,7 @@ const guides = allGuides.filter((g) => guideSlugs.has(g.slug));
 const games = (await getCollection("games")).filter((entry) => !entry.data.exclude);
 const teslaGames = games.filter((g) => g.data.tesla?.available).slice(0, 6);
 ---
-<SiteLayout title={`${title} hub`} description={description}>
+<SiteLayout title={title} description={description}>
   <header class="mb-8">
     <a class="text-sm text-[var(--brand-blue)] font-semibold" href="/">← Back home</a>
     <p class="text-xs uppercase tracking-widest text-slate-500">Platform hub</p>

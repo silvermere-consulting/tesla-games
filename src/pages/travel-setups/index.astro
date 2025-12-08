@@ -5,8 +5,8 @@ import "../../styles/global.css";
 
 export const prerender = true;
 
-const title = "Travel setups";
-const description = "Road-trip gaming, hotel rigs, power banks, portable screens, and controllers built for motion.";
+const title = "Travel Gaming Setups";
+const description = "Ideas, accessories and portable configurations for gaming while travelling.";
 
 const allGuides = (await getCollection("guides")).filter((entry) => !entry.data.exclude);
 const guideSlugs = new Set(["controllers", "local-multiplayer", "budget-upgrade"]);

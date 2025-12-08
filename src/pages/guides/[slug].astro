@@ -19,16 +19,108 @@ const { Content } = await entry.render();
 const title = entry.data.seoTitle ?? entry.data.title;
 const description = entry.data.seoDescription ?? entry.data.short ?? `Guide: ${entry.data.title}`;
 const ogImage = entry?.data?.coverImage ?? "/favicon.svg";
+const canonicalBase = "https://gamesonthemove.com";
+const canonicalUrl = `${canonicalBase}${pagePath}`;
+const allGuides = (await getCollection("guides")).filter((g) => !g.data.exclude);
+const topics = entry.data.topics ?? [];
+const scoreGuide = (g) => {
+  if (g.slug === entry.slug) return -1;
+  if (topics.length === 0) return 0;
+  const otherTopics = g.data.topics ?? [];
+  const overlap = otherTopics.filter((t) => topics.includes(t)).length;
+  return overlap;
+};
+const relatedCandidates = allGuides
+  .filter((g) => g.slug !== entry.slug)
+  .map((g) => ({ guide: g, score: scoreGuide(g) }))
+  .sort((a, b) => b.score - a.score || (b.guide.data.updated ?? "0").localeCompare(a.guide.data.updated ?? "0"));
+const relatedGuides =
+  topics.length > 0
+    ? relatedCandidates.slice(0, 3).filter((item) => item.score >= 0)
+    : relatedCandidates.slice(0, 3);
+const faqs = entry.data.faqs ?? [];
+const articleLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: entry.data.title,
+  description: entry.data.description,
+  datePublished: entry.data.date,
+  url: canonicalUrl,
+};
+const faqLd = faqs.length
+  ? {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.answer,
+        },
+      })),
+    }
+  : null;
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://gamesonthemove.com/",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Guides",
+      item: "https://gamesonthemove.com/guides/",
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: entry.data.title,
+      item: canonicalUrl,
+    },
+  ],
+};
 ---
 <SiteLayout title={title} description={description} ogImage={ogImage} ogType="article" mainClass="max-w-3xl px-6 py-10">
   <a class="text-sm text-[var(--brand-blue)] font-semibold" href="/guides">← All guides</a>
   <article class="prose prose-slate max-w-none">
+    <nav aria-label="Breadcrumb" class="mb-4 text-sm text-slate-500">
+      <ol class="flex flex-wrap gap-1 list-none p-0 m-0">
+        <li>
+          <a href="/" class="hover:underline">Home</a>
+          <span class="mx-1">/</span>
+        </li>
+        <li>
+          <a href="/guides" class="hover:underline">Guides</a>
+          <span class="mx-1">/</span>
+        </li>
+        <li aria-current="page" class="font-medium text-slate-700">
+          {entry.data.title}
+        </li>
+      </ol>
+    </nav>
     <header class="mb-6">
       <h1 class="!mb-2">{entry.data.title}</h1>
       {entry.data.short && <p class="text-slate-600 !mt-0">{entry.data.short}</p>}
-      {entry.data.coverImage && <img src={entry.data.coverImage} alt="" class="rounded-xl my-4" loading="lazy" />}
+      {entry.data.coverImage && <img src={entry.data.coverImage} alt={entry.data.title} class="rounded-xl my-4" loading="lazy" />}
       {entry.data.updated && <p class="text-xs text-slate-500">Updated: {entry.data.updated}</p>}
     </header>
+    <script type="application/ld+json">
+      {JSON.stringify(articleLd)}
+    </script>
+    {faqLd && (
+      <script type="application/ld+json">
+        {JSON.stringify(faqLd)}
+      </script>
+    )}
+    <script type="application/ld+json">
+      {JSON.stringify(breadcrumbLd)}
+    </script>
     <Content />
     {entry.data.ctas.length > 0 && (
       <aside class="mt-8 p-4 border rounded-xl bg-white">
@@ -55,5 +147,35 @@ const ogImage = entry?.data?.coverImage ?? "/favicon.svg";
       </aside>
     )}
   </article>
+  {faqs.length > 0 && (
+    <section class="mt-10" aria-labelledby="faq-heading">
+      <h2 id="faq-heading" class="text-xl font-semibold text-[var(--brand-slate)]">Frequently Asked Questions</h2>
+      <dl class="mt-4 space-y-4">
+        {faqs.map((faq) => (
+          <div class="space-y-2">
+            <dt class="font-semibold text-[var(--brand-slate)]">{faq.question}</dt>
+            <dd class="text-slate-600">{faq.answer}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  )}
+  {relatedGuides.length > 0 && (
+    <section class="mt-12">
+      <h2 class="text-xl font-semibold text-[var(--brand-slate)] mb-4">Related guides</h2>
+      <ul class="grid gap-4 sm:grid-cols-2">
+        {relatedGuides.map(({ guide }) => (
+          <li class="border border-slate-100 rounded-2xl bg-white shadow-sm hover:shadow-md transition">
+            <a href={`/guides/${guide.slug}`} class="block p-4">
+              <p class="text-xs uppercase tracking-widest text-slate-500">Guide</p>
+              <h3 class="text-lg font-semibold text-[var(--brand-slate)] mt-1">{guide.data.title}</h3>
+              {guide.data.short && <p class="text-sm text-slate-600 mt-2 line-clamp-3">{guide.data.short}</p>}
+              <span class="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-[var(--brand-blue)]">Read guide →</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
   <GuideFeedback pagePath={pagePath} />
 </SiteLayout>

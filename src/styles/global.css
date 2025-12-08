@@ -24,3 +24,24 @@ a {
 ::selection {
   background: rgba(55, 99, 255, 0.2);
 }
+
+.game-buy-links {
+  list-style: none;
+  padding-left: 0;
+  margin: 0.5rem 0 0;
+}
+
+.game-buy-links li + li {
+  margin-top: 0.25rem;
+}
+
+.game-buy-links a {
+  color: #0C9CF5;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.game-buy-links a:hover,
+.game-buy-links a:focus-visible {
+  text-decoration: underline;
+}

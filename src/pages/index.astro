@@ -26,7 +26,7 @@ const featuredGuides = featuredGuideSlugs
   .slice(0, 3);
 
 const ogImage = popularGames[0]?.data.coverImage ?? "/favicon.svg";
-const description = "Portable and multi-platform gaming: Steam Deck, Switch, handheld PCs, consoles, cloud, mobile — including Tesla Arcade favourites.";
+const description = "Guides, breakdowns and setup ideas for playing games on the move — Switch, Steam Deck, PC and more.";
 
 const whatWeDo = [
   {
@@ -194,7 +194,7 @@ const playDestinations = [
               data-umami-event-title={g.data.title}
             >
               {g.data.coverImage ? (
-                <img src={g.data.coverImage} alt="" class="w-full aspect-[16/9] object-cover" loading="lazy" width="640" height="360" />
+                <img src={g.data.coverImage} alt={g.data.title} class="w-full aspect-[16/9] object-cover" loading="lazy" width="640" height="360" />
               ) : (
                 <div class="w-full aspect-[16/9] bg-slate-100 grid place-items-center text-slate-400 text-sm">No image</div>
               )}
