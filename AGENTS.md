@@ -21,6 +21,12 @@ The primary audiences are:
 - Keep the **game library** and **guides** consistent and structured so we can scale SEO and affiliates.
 - Don’t break existing routes or content schemas unless explicitly asked.
 
+### Out of scope (important)
+
+- Do **not** treat this as a general “family travel games” site.
+- Do **not** add or recommend physical card/board/party games that aren’t part of a digital platform catalogue.
+- Focus on **digital games and platforms only** (Steam, Switch, PlayStation, Xbox, mobile, cloud, etc.), especially in relation to Tesla Arcade equivalents.
+
 ---
 
 ## Project Structure
