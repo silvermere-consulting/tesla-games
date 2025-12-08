@@ -26,46 +26,50 @@ const featuredGuides = featuredGuideSlugs
   .slice(0, 3);
 
 const ogImage = popularGames[0]?.data.coverImage ?? "/favicon.svg";
-const description = "Turn Tesla Arcade favourites into portable-ready libraries on Steam Deck, Switch, PC, iPad, and cloud gaming.";
+const description = "Portable and multi-platform gaming: Steam Deck, Switch, handheld PCs, consoles, cloud, mobile — including Tesla Arcade favourites.";
 
 const whatWeDo = [
   {
     title: "Platform availability",
-    body: "Find Tesla Arcade equivalents on Steam, Switch, PlayStation, Xbox, iPad, and cloud.",
+    body: "See where each game plays best across Steam, Switch / Switch 2, PlayStation, Xbox, PC, handhelds, mobile, and cloud.",
   },
   {
     title: "Cross-save & progression",
-    body: "Know which versions keep your progress in sync across handhelds and home.",
+    body: "Know when saves sync across Deck, Switch, consoles, and cloud so you can move between devices.",
   },
   {
-    title: "Best devices",
-    body: "Pick the right portable — Steam Deck, Switch, iPad, Android, or cloud-first setups.",
+    title: "Pick the right device",
+    body: "Choose the portable or living-room setup that fits: Steam Deck, handheld PCs, Switch, iPad/Android, or cloud-first.",
+  },
+  {
+    title: "Tesla Arcade replacements",
+    body: "Help ex-Tesla owners rebuild Arcade line-ups on portable and at-home hardware.",
   },
   {
     title: "Verified affiliate links",
-    body: "Only authorised stores and vetted accessories so you avoid knock-offs.",
+    body: "Only authorised stores (Amazon, GMG, Humble, etc.) and vetted accessories so you avoid knock-offs.",
   },
 ];
 
 const playDestinations = [
-  { title: "Steam Deck", href: "/guides/steam-deck", note: "Valve’s handheld + docked play" },
-  { title: "Switch", href: "/guides/switch", note: "Family-friendly, offline, travel-ready" },
-  { title: "iPad", href: "/guides/ipad", note: "Apple Arcade, cloud, and external controllers" },
-  { title: "Android", href: "/guides/android", note: "Cloud, emulation, and Tesla-friendly options" },
-  { title: "Cloud gaming", href: "/guides/cloud", note: "GeForce NOW, Xbox Cloud, and hotel Wi-Fi tips" },
+  { title: "Steam Deck", href: "/guides/steam-deck", note: "Valve’s handheld PC — huge library, flexible settings" },
+  { title: "Switch", href: "/guides/switch", note: "Family-friendly, offline-first; Switch / Switch 2 ready" },
+  { title: "iPad", href: "/guides/ipad", note: "Apple Arcade, cloud, and controller-friendly tablet play" },
+  { title: "Android", href: "/guides/android", note: "Cloud, emulation, and portable phone/tablet builds" },
+  { title: "Cloud gaming", href: "/guides/cloud", note: "Stream PC/console games to any screen" },
 ];
 ---
-<SiteLayout title="Games On The Move | Tesla Arcade Anywhere" description={description} ogImage={ogImage}>
+<SiteLayout title="Games On The Move | Portable & multi-platform gaming" description={description} ogImage={ogImage}>
   <section class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] items-center">
     <div class="space-y-6">
       <p class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
         <span class="h-2 w-2 rounded-full bg-[var(--brand-blue)]"></span>
-        Tesla Arcade → Portable gaming
+        Portable gaming • Multi-platform library (Tesla Arcade supported)
       </p>
       <div class="space-y-4">
-        <h1 class="text-4xl sm:text-5xl font-bold text-[var(--brand-slate)] leading-tight">Your Tesla Favourite Games — Now Playable Anywhere</h1>
+        <h1 class="text-4xl sm:text-5xl font-bold text-[var(--brand-slate)] leading-tight">Great digital games — wherever you play</h1>
         <p class="text-lg text-slate-600 max-w-2xl">
-          Bring Tesla Arcade games to Steam Deck, Switch, iPad, PC, consoles and cloud. We map platform availability, cross-save paths, and the best hardware for travel-ready play.
+          Find games that run well on portable and at-home hardware — Steam Deck, Switch / Switch 2, handheld PCs, consoles, cloud, and mobile — plus Tesla Arcade favourites for ex-Tesla owners who want the same line-ups elsewhere. See platform availability, cross-save paths, and the gear that keeps you playing on the move.
         </p>
       </div>
       <div class="flex flex-wrap gap-4">
@@ -79,11 +83,11 @@ const playDestinations = [
       <div class="grid gap-3 sm:grid-cols-2">
         <div class="rounded-2xl border border-slate-100 p-4 bg-slate-50">
           <p class="text-sm font-semibold text-slate-500">Platforms covered</p>
-          <p class="text-lg font-bold text-[var(--brand-slate)]">Tesla · Deck · Switch · iPad · PC · Cloud</p>
+          <p class="text-lg font-bold text-[var(--brand-slate)]">Steam Deck · Switch/2 · handheld PCs · consoles · mobile · cloud · Tesla Arcade</p>
         </div>
         <div class="rounded-2xl border border-slate-100 p-4 bg-slate-50">
-          <p class="text-sm font-semibold text-slate-500">Cross-save focus</p>
-          <p class="text-lg font-bold text-[var(--brand-slate)]">Move progress between devices</p>
+          <p class="text-sm font-semibold text-slate-500">Cross-save & progression</p>
+          <p class="text-lg font-bold text-[var(--brand-slate)]">Keep progress synced across handhelds, consoles, and cloud</p>
         </div>
       </div>
     </div>
@@ -106,7 +110,7 @@ const playDestinations = [
 
   <section class="mt-16">
     <div class="flex items-baseline justify-between mb-4">
-      <h2 class="text-2xl font-semibold text-[var(--brand-slate)]">Popular Tesla Arcade games</h2>
+      <h2 class="text-2xl font-semibold text-[var(--brand-slate)]">Popular portable picks & Tesla Arcade favourites</h2>
       <a class="text-sm font-semibold text-[var(--brand-blue)]" href="/games">View all games</a>
     </div>
     {popularGames.length === 0 ? (
@@ -138,7 +142,7 @@ const playDestinations = [
               )}
               <div class="p-4 space-y-1">
                 <h3 class="font-semibold text-[var(--brand-slate)]">{g.data.title}</h3>
-                <p class="text-xs text-slate-500">Where to play · cross-save tips</p>
+                <p class="text-xs text-slate-500">Portable fit, platforms, and cross-save notes</p>
                 {g.data.tesla?.available ? (
                   <p class="text-xs text-emerald-700">Available in Tesla Arcade</p>
                 ) : (
@@ -154,7 +158,7 @@ const playDestinations = [
 
   <section class="mt-16">
     <div class="flex items-baseline justify-between mb-4">
-      <h2 class="text-2xl font-semibold text-[var(--brand-slate)]">Where should you play?</h2>
+      <h2 class="text-2xl font-semibold text-[var(--brand-slate)]">Where should you play first?</h2>
       <a class="text-sm font-semibold text-[var(--brand-blue)]" href="/guides">See all guides</a>
     </div>
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -172,7 +176,7 @@ const playDestinations = [
 
   <section class="mt-16">
     <div class="flex items-baseline justify-between mb-4">
-      <h2 class="text-2xl font-semibold text-[var(--brand-slate)]">Featured guides</h2>
+      <h2 class="text-2xl font-semibold text-[var(--brand-slate)]">Featured guides for portable & multi-platform play</h2>
       <a class="text-sm font-semibold text-[var(--brand-blue)]" href="/guides">View all</a>
     </div>
     {featuredGuides.length === 0 ? (
@@ -206,7 +210,10 @@ const playDestinations = [
     )}
   </section>
 
-  <p class="mt-16 text-xs text-slate-500">
+  <p class="mt-16 text-sm text-slate-600">
+    Portable and multi-platform digital gaming for Steam Deck, Switch / Switch 2, handheld PCs, consoles, cloud, and mobile — plus Tesla Arcade replacements for ex-owners.
+  </p>
+  <p class="mt-2 text-xs text-slate-500">
     As an Amazon Associate and partner of other retailers, we may earn affiliate commissions from qualifying purchases.
   </p>
 </SiteLayout>
