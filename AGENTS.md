@@ -32,7 +32,8 @@ Help these audience members know how to:
 ### What matters most
 
 - Preserve the **“Games On The Move”** branding and tone: helpful, clear, semi-formal, not shouty.
-- Keep the **game library** and **guides** consistent and structured so we can scale SEO and affiliates.
+- Keep the **game library**, **platform hubs**, and **guides** consistent and structured so we can scale SEO and affiliate integrations.
+- Treat Tesla Arcade as an **important use-case but not the only one** – it’s fine to include games that were never in Tesla Arcade if they fit the portable / multi-platform focus.
 - Don’t break existing routes or content schemas unless explicitly asked.
 
 ### Out of scope (important)
@@ -83,6 +84,39 @@ Use this mental map when editing:
 - `node_modules/.vite/`
 - `node_modules/.astro/`
 
+---
+## Architecture
+Content model
+	•	Games are content entries under src/content/games/ (e.g. you referenced src/content/games/2048.mdx).
+	•	Games are driven by frontmatter tokens validated by src/content/config.ts.
+	•	Guardrail: no schema shape changes for games unless explicitly part of an architect-approved slice.
+
+Affiliate & store link system
+	•	Affiliate links are centralised in src/lib/affiliates.ts, which assembles:
+	•	store ordering + affiliate store set from src/data/stores.json  ￼
+	•	per-game store configuration from src/data/game-links.json  ￼
+	•	Amazon hardware deep-links from src/data/asins.json  ￼
+
+stores.json contract
+	•	Defines default store ordering and which stores are “affiliate” stores  ￼
+	•	Carries partner IDs/codes (note: currently placeholders like YOUR_GMG_ID)  ￼
+
+game-links.json contract
+	•	Keyed by slug (e.g. vampire-survivors, 2048) and lists which stores to show, using query and optionally productId  ￼
+	•	Also contains “hardware-like” entries for controllers that map to Amazon queries (useful precedent for hardware CTA patterns)  ￼
+
+asins.json contract
+	•	Maps hardware keys to ASINs for deep links  ￼
+
+Guardrails
+	•	No hard-coded affiliate URLs inside pages/components.
+	•	To add or change store links for a game: edit src/data/game-links.json first.
+	•	To add/adjust store ordering or affiliate designation: edit src/data/stores.json.
+	•	To add hardware deep links: update src/data/asins.json.
+  
+  ## Architectural authority
+	•	AGENTS.md is the source of truth for structure and guardrails.
+	•	If a requested change conflicts with AGENTS.md, Codex must stop and ask.
 ---
 
 ## Build, Test, and Dev Commands

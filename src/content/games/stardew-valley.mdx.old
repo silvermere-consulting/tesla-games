@@ -1,0 +1,55 @@
+---
+title: "Stardew Valley"
+short: "Farming-life sim with cozy vibes and surprising depth."
+coverImage: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/413150/capsule_616x353.jpg?t=1754692865"
+
+tesla:
+  available: true
+  scope: "Core game loop suited to short tasks."
+  controllerRequired: true
+  localCoop: false
+  notes:
+    - "Great controller support."
+    - "Parked play only."
+
+platforms:
+  pc:
+    available: true
+    stores: ["steam","gog","humble","gmg","fanatical","ms"]
+    perks:
+      - "Full content, mods (PC)"
+      - "Local & online co-op on PC"
+  xbox:
+    available: true
+    perks:
+      - "Console co-op; cloud saves within Xbox"
+  playstation:
+    available: true
+    perks:
+      - "Console co-op; trophies"
+  switch:
+    available: true
+    perks:
+      - "Portable farming; local co-op"
+  mobile:
+    available: true
+    perks:
+      - "Touch controls; single-player"
+
+saves:
+  teslaExportSupported: false
+  crossSaveNotes:
+    - "No Tesla → home export."
+    - "Within the same platform/store, cloud saves sync (e.g., Steam Cloud)."
+
+features:
+  localCoop: true
+  onlineCoopNative: true
+  onlineCoopWorkaround: []
+  controllerRecommended: true
+
+recommendedHardware: ["xbox_controller","ps5_dualsense","usb_hub"]
+
+notes:
+  - "PC supports modding; easiest co-op setup on Steam."
+---
