@@ -1,0 +1,31 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import "../../styles/global.css";
+import hubs from "../../data/platform-hubs.json";
+
+export const prerender = true;
+
+const hubEntries = Object.entries(hubs).map(([slug, hub]) => ({ slug, hub }));
+const title = "Platform hubs";
+const description = "Steam Deck and Switch hubs for portable-first play, mapped to existing PC/Switch platform data.";
+---
+<SiteLayout title={title} description={description}>
+  <header class="mb-6">
+    <a class="text-sm text-[var(--brand-blue)] font-semibold" href="/">← Back home</a>
+    <h1 class="text-3xl font-bold mt-2 mb-2 text-[var(--brand-slate)]">{title}</h1>
+    <p class="text-slate-600">{description}</p>
+  </header>
+
+  <ul class="grid sm:grid-cols-2 gap-5">
+    {hubEntries.map(({ slug, hub }) => (
+      <li class="border border-slate-100 rounded-2xl p-4 bg-white shadow-sm hover:shadow-md transition">
+        <a href={`/platforms/${slug}/`} class="block">
+          <p class="text-xs uppercase tracking-[0.15em] text-slate-500">Context: {hub.contextPlatformKey.toUpperCase()}</p>
+          <h2 class="text-xl font-semibold text-[var(--brand-slate)] mt-1">{hub.title}</h2>
+          <p class="text-sm text-slate-600 mt-2">{hub.intro?.[0]}</p>
+          <p class="text-sm text-[var(--brand-blue)] font-semibold mt-3">View hub →</p>
+        </a>
+      </li>
+    ))}
+  </ul>
+</SiteLayout>

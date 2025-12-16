@@ -25,6 +25,7 @@ node_modules/.astro/
 # MacOS system files
 .DS_Store
 **/.DS_Store
+src/content/GBP-Affiliate-Product-Catalog_IR-GMG.txt
 
 # Logs
 *.log

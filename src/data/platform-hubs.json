@@ -1,0 +1,20 @@
+{
+  "steam-deck": {
+    "title": "Steam Deck",
+    "contextPlatformKey": "pc",
+    "intro": [
+      "Steam Deck is best treated as a PC handheld: your PC library, portable form factor.",
+      "On the move, prioritise games with short runs, clear UI, and good controller support."
+    ],
+    "gameSlugs": ["vampire-survivors"]
+  },
+  "switch": {
+    "title": "Nintendo Switch (and Switch 2)",
+    "contextPlatformKey": "switch",
+    "intro": [
+      "Switch is handheld-first and low-friction: instant sleep/resume and consistent controls.",
+      "Switch 2 is treated under the Switch umbrella unless we later add a platform family model."
+    ],
+    "gameSlugs": ["vampire-survivors"]
+  }
+}
