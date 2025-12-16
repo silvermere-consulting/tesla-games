@@ -199,3 +199,38 @@ Treat these as **read-only / generated** unless the user is doing infrastructure
   4. Remind them of any follow-up checks (e.g. `npm run build`).
 
 If the request is ambiguous, prefer to **propose a safe default** rather than inventing large new structures.
+
+## Content staging format (TSV workflow)
+
+For scalable content production, Games On The Move uses a **content staging TSV** as an authoring and verification layer.
+
+### Purpose
+- Provide a single, reviewable source for:
+  - editorial copy
+  - platform availability flags
+  - affiliate query inputs
+  - cover image URLs
+- Enable batch content creation without touching schemas or templates.
+
+### Location
+- TSV files live in the repo under `/content/` (or equivalent non-public directory).
+- They are **not** shipped to the site and **not** read at runtime.
+
+### Contract
+- The TSV is **input-only**.
+- Canonical site artefacts remain:
+  - `src/content/games/<slug>.mdx`
+  - `src/data/game-links.json`
+
+### Codex responsibilities
+- Read the TSV.
+- Generate or update:
+  - MDX game files that validate against `src/content/config.ts`
+  - `game-links.json` entries (queries only for Slice 1).
+- Do **not** introduce new schema fields.
+- Do **not** wire TSV files into runtime code.
+
+### Slice 1 constraints
+- GMG + Amazon only.
+- Queries only (no deep-link wiring yet).
+- `coverImage` in MDX should use the TSV image URL when provided.
